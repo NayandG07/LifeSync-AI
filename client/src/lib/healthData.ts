@@ -34,42 +34,61 @@ export const useHealthStore = create<HealthMetricsState>()(
       loadHealthData: async () => {
         set({ isLoading: true });
         
-        // First try to load from Firestore if user is authenticated
-        if (auth.currentUser) {
-          try {
-            const userId = auth.currentUser.uid;
-            const metricsRef = collection(db, 'healthMetrics');
-            const q = query(
-              metricsRef,
-              where('userId', '==', userId),
-              orderBy('timestamp', 'desc'),
-              limit(1)
-            );
-            
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-              const data = querySnapshot.docs[0].data();
+        try {
+          // First try to load from Firestore if user is authenticated
+          if (auth.currentUser) {
+            try {
+              const userId = auth.currentUser.uid;
+              const metricsRef = collection(db, 'healthMetrics');
               
-              set({
-                heartRate: data.heartRate || 72,
-                sleepHours: data.sleepHours || 7.5,
-                steps: data.steps || 8439,
-                bodyTemperature: data.bodyTemp || 98.6,
-                caloriesBurned: data.caloriesBurned || 1250,
-                bloodGlucose: data.bloodGlucose || 98,
-                lastUpdated: data.timestamp?.toDate() || new Date(),
-                isLoading: false
-              });
-              return;
+              // Try a simpler query first that doesn't require a composite index
+              let q = query(
+                metricsRef,
+                where('userId', '==', userId),
+                limit(10)
+              );
+              
+              try {
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                  // Sort results manually if we have documents
+                  const sortedDocs = querySnapshot.docs.sort(
+                    (a, b) => b.data().timestamp?.toDate() - a.data().timestamp?.toDate()
+                  );
+                  
+                  if (sortedDocs.length > 0) {
+                    const data = sortedDocs[0].data();
+                    
+                    set({
+                      heartRate: data.heartRate || 72,
+                      sleepHours: data.sleepHours || 7.5,
+                      steps: data.steps || 8439,
+                      bodyTemperature: data.bodyTemp || 98.6,
+                      caloriesBurned: data.caloriesBurned || 1250,
+                      bloodGlucose: data.bloodGlucose || 98,
+                      lastUpdated: data.timestamp?.toDate() || new Date(),
+                      isLoading: false
+                    });
+                    return;
+                  }
+                }
+              } catch (queryError) {
+                console.log("Simplified query failed, using defaults:", queryError);
+              }
+            } catch (error) {
+              console.error("Error loading health metrics from Firestore:", error);
+              // Continue with defaults
             }
-          } catch (error) {
-            console.error("Error loading health metrics from Firestore:", error);
           }
+          
+          // If we're here, either the user is not authenticated or we couldn't load from Firestore
+          // No need to set default values here as they're already in the initial state
+        } catch (error) {
+          console.error("Unexpected error in loadHealthData:", error);
+        } finally {
+          set({ isLoading: false });
         }
-        
-        // If we're here, either the user is not authenticated or we couldn't load from Firestore
-        // No need to set default values here as they're already in the initial state
-        set({ isLoading: false });
       },
       
       updateMetric: async (metric: string, value: number) => {

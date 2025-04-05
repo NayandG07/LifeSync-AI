@@ -216,9 +216,18 @@ export default function Home() {
 
     const userProfile = localStorage.getItem('userProfile');
     if (userProfile) {
-      const { name } = JSON.parse(userProfile);
-      const firstWord = name.split(' ')[0];
-      setFirstName(firstWord);
+      try {
+        const profile = JSON.parse(userProfile);
+        if (profile && profile.name) {
+          const firstWord = profile.name.split(' ')[0];
+          setFirstName(firstWord);
+        } else {
+          setFirstName("");
+        }
+      } catch (error) {
+        console.error("Error parsing user profile:", error);
+        setFirstName("");
+      }
     }
 
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -262,7 +271,7 @@ export default function Home() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard');
+      navigate('/');
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -276,7 +285,7 @@ export default function Home() {
 
     try {
       await signInWithPopup(auth, googleProvider);
-      navigate('/dashboard');
+      navigate('/');
     } catch (error: any) {
       setError(error.message);
     } finally {
