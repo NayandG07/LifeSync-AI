@@ -1,0 +1,135 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00a3ff;
+}
+
+.nav-items a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.logout {
+    color: red;
+    font-weight: bold;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Health Score */
+.health-score {
+    display: flex;
+    justify-content: space-between;
+    background: #eef5ff;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.score-circle {
+    background: #008aff;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Grid Cards */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.red {
+    color: red;
+}
+
+/* Progress Bar */
+.progress-bar {
+    background: #ddd;
+    height: 6px;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+.progress {
+    background: #00a3ff;
+    height: 100%;
+    border-radius: 5px;
+}
+
+/* Bottom Section */
+.bottom-section {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.bottom-section .card {
+    flex: 1;
+    text-align: center;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    background: #00a3ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0075cc;
+}

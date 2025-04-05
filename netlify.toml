@@ -1,0 +1,39 @@
+[build]
+command = "npm install express && cd client && npm install && npm run build"
+publish = "client/dist"
+
+[build.environment]
+NODE_VERSION = "18.18.0"
+NPM_VERSION = "9.6.7"
+VITE_EXTERNAL_PACKAGES = "@radix-ui/react-icons"
+NODE_OPTIONS = "--max_old_space_size=4096"
+
+[dev]
+command = "cd client && npm run dev"
+port = 3000
+autoLaunch = true
+
+[functions]
+directory = "functions/src"
+node_bundler = "esbuild"
+external_node_modules = ["express", "@neondatabase/serverless", "openai", "@huggingface/inference"]
+
+# Redirect API requests to Netlify Functions
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/:splat"
+status = 200
+force = true
+
+# Ensure direct access to functions also works
+[[redirects]]
+from = "/functions/*"
+to = "/.netlify/functions/:splat"
+status = 200
+force = true
+
+# All other routes go to the SPA
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200 

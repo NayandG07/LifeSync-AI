@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LifeSync - Health & Wellness Companion</title>
+
+    <!-- Preload critical assets with proper attributes -->
+    <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- DNS prefetch for Firebase -->
+    <link rel="dns-prefetch" href="https://firestore.googleapis.com">
+    <link rel="dns-prefetch" href="https://firebase-auth.googleapis.com">
+    
+    <!-- Preconnect to Firebase -->
+    <link rel="preconnect" href="https://firestore.googleapis.com">
+    <link rel="preconnect" href="https://firebase-auth.googleapis.com">
+
+    <!-- Meta tags for better SEO and performance -->
+    <meta name="description" content="LifeSync - Your AI-powered health and wellness companion">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Environment variables with error handling -->
+    <script>
+      // Define a global error handler for script loading errors
+      window.addEventListener('error', function(event) {
+        if (event.target && event.target.tagName === 'SCRIPT') {
+          const src = event.target.src || '';
+          // Only handle env-config.js errors
+          if (src.includes('env-config.js')) {
+            console.warn('Error loading environment configuration. Using fallback.');
+            // Load fallback configuration
+            const fallbackScript = document.createElement('script');
+            fallbackScript.src = '/fallback-env-config.js';
+            document.head.appendChild(fallbackScript);
+          }
+        }
+      }, true); // Use capture phase
+      
+      // Initialize default ENV if it doesn't exist yet
+      window.ENV = window.ENV || {};
+    </script>
+    <script src="/env-config.js" onerror="console.warn('Primary env-config.js failed to load. Using fallback.'); const s=document.createElement('script'); s.src='/fallback-env-config.js'; document.head.appendChild(s);"></script>
+    
+    <!-- Critical CSS -->
+    <style>
+      /* Add any critical CSS here */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/inter-var.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      
+      body {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Initial loading state -->
+      <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

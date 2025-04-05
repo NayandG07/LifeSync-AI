@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeSync Dashboard</title>
+    <link rel="stylesheet" href="MyStyle.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">LifeSync</div>
+        <div class="nav-items">
+            <a href="#">Dashboard</a>
+            <a href="#">Symptom Analyzer</a>
+            <a href="#">AI Chatbot</a>
+            <a href="#">Profile</a>
+            <a href="#" class="logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="health-score">
+            <h3>Daily Health Score</h3>
+            <p>Today's Progress</p>
+            <div class="score-circle">48</div>
+        </div>
+
+        <div class="grid-container">
+            <div class="card steps">
+                <h4>Steps</h4>
+                <p class="value">5,466</p>
+                <p>Progress: 54.7% of goal</p>
+                <div class="progress-bar"><div class="progress" style="width: 54%;"></div></div>
+                <small>Daily Goal: 10,000 steps</small>
+            </div>
+
+            <div class="card heart-rate">
+                <h4>Heart Rate</h4>
+                <p class="value red">72 BPM</p>
+                <p class="status">Normal</p>
+                <small>Resting Rate: 68 BPM</small>
+            </div>
+
+            <div class="card blood-pressure">
+                <h4>Blood Pressure</h4>
+                <p class="value">120/80</p>
+                <p class="status">Optimal</p>
+                <small>Normal range: 120/80 mmHg</small>
+            </div>
+
+            <div class="card calories">
+                <h4>Calories Burned</h4>
+                <p class="value">277 kcal</p>
+                <p>Progress: 27.7% of goal</p>
+                <div class="progress-bar"><div class="progress" style="width: 28%;"></div></div>
+                <small>Daily Goal: 1,000 kcal</small>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="card medications">
+                <h4>Medications</h4>
+                <p>No medications recorded</p>
+                <button>Add Medication</button>
+            </div>
+            <div class="card water-intake">
+                <h4>Water Intake</h4>
+                <p>0 ml</p>
+                <button>Log Intake</button>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="chatbot-btn">Chat with AI Assistant</button>
+            <button class="symptom-btn">Check Symptoms</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Users collection and nested messages
+    match /users/{userId} {
+      allow read, write: if isAuthenticated();
+      
+      // Nested messages subcollection
+      match /messages/{messageId} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+    
+    match /moods/{moodId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /symptoms/{symptomId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /health_metrics/{metricId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /water_logs/{logId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Allow all operations for authenticated users during development
+    match /{collection}/{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

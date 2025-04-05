@@ -1,0 +1,8 @@
+[33mcommit 9a5932ce2ff68149f8b9cbd94216704f23c50c44[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: NayandG07 <nayandg8@gmail.com>
+Date:   Fri Apr 4 01:12:17 2025 +0530
+
+    Updated the API Calling issue
+
+ client/src/lib/gemma.ts | 94 [32m+++[m[31m----------------------------------------------[m
+ 1 file changed, 4 insertions(+), 90 deletions(-)

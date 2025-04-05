@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 250 84% 54%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 250 84% 54%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 250 84% 54%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 250 84% 54%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground relative min-h-screen;
+  }
+
+  /* Global theme consistency */
+  .dark body, 
+  .dark-theme body,
+  .dark #root,
+  .dark-theme #root,
+  .dark main,
+  .dark-theme main {
+    background-color: var(--page-background) !important;
+    color: var(--text-color) !important;
+    background-image: linear-gradient(to bottom right, #111827, #0f172b),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232d3748' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+  }
+
+  /* Ensure consistent card styling */
+  .dark .card,
+  .dark-theme .card,
+  .dark [role="dialog"],
+  .dark-theme [role="dialog"],
+  .dark [class*="modal"],
+  .dark-theme [class*="modal"] {
+    background: linear-gradient(135deg, rgba(30, 30, 46, 0.9), rgba(20, 20, 35, 0.8)) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(99, 102, 241, 0.1) !important;
+  }
+
+  /* Enhanced gradient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(
+        circle at top left,
+        hsl(var(--background)) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        hsl(var(--primary) / 0.1) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at center,
+        hsl(var(--background)) 0%,
+        transparent 100%
+      );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Enhanced dark mode gradient */
+  .dark body::before {
+    background: 
+      radial-gradient(
+        circle at top left,
+        hsl(var(--background)) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        hsl(var(--primary) / 0.2) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        circle at center,
+        hsl(var(--primary) / 0.05) 0%,
+        transparent 100%
+      );
+  }
+}
+
+@layer utilities {
+  /* Water wave animation for hydration tracking */
+  @keyframes wave {
+    0% {
+      transform: translateX(0) translateZ(0) scaleY(1);
+    }
+    50% {
+      transform: translateX(-25%) translateZ(0) scaleY(0.8);
+    }
+    100% {
+      transform: translateX(-50%) translateZ(0) scaleY(1);
+    }
+  }
+  
+  .animate-wave {
+    animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  /* Reduce container paddings */
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  /* Make cards more compact */
+  .card {
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Adjust spacing in card components */
+  .card-header {
+    padding: 0.75rem;
+  }
+  
+  .card-content {
+    padding: 0.75rem;
+  }
+  
+  .card-footer {
+    padding: 0.75rem;
+  }
+  
+  /* Smaller text for mobile */
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* Fix button sizes on mobile */
+  .btn, button:not([class*="size-"]) {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Fix tooltip positioning on mobile */
+  [data-state="open"][role="tooltip"] {
+    max-width: 250px;
+  }
+}
+
+/* Extra small mobile screens */
+@media (max-width: 375px) {
+  /* Extra reduction for very small screens */
+  .container {
+    padding-left: 0.375rem;
+    padding-right: 0.375rem;
+  }
+  
+  /* Even more compact cards */
+  .card {
+    border-radius: 0.5rem;
+    margin-bottom: 0.375rem;
+  }
+  
+  /* Minimized padding in card components */
+  .card-header, 
+  .card-content, 
+  .card-footer {
+    padding: 0.5rem;
+  }
+  
+  /* Smaller text and icons */
+  .lucide {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  /* Smaller tooltips on mobile */
+  [data-state="open"][role="tooltip"] {
+    max-width: 200px;
+    font-size: 0.75rem;
+  }
+}

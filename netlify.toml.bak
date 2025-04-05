@@ -1,0 +1,62 @@
+[build]
+  command = "npm install && npm run build"
+  publish = "dist/public"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+
+[dev]
+  command = "npm run dev:frontend"
+  port = 3000
+  targetPort = 3000
+  publish = "dist/public"
+  autoLaunch = true
+
+[functions]
+  directory = "functions/src"
+  node_bundler = "esbuild"
+  included_files = ["functions/src/**/*.js", "functions/src/**/*.ts"]
+  excluded_files = ["**/node_modules/**/.eslintrc*", "**/node_modules/**/*"]
+  external_node_modules = ["node-fetch", "firebase", "firebase-admin"]
+
+# Individual function configurations
+[[functions]]
+  name = "gemma-proxy"
+  path = "functions/src/gemma-proxy.js"
+
+[[functions]]
+  name = "gemma-proxy.mjs"
+  path = "functions/src/gemma-proxy.mjs"
+
+[[functions]]
+  name = "gemma-proxy-simple"
+  path = "functions/src/gemma-proxy-simple.js"
+
+[[functions]]
+  name = "gemma-test"
+  path = "functions/src/gemma-test.js"
+
+[[functions]]
+  name = "test"
+  path = "functions/src/test.js"
+
+[[functions]]
+  name = "hello"
+  path = "functions/src/hello.js"
+
+[[functions]]
+  name = "hello-world"
+  path = "functions/src/hello-world.js"
+
+# API routes should not be handled by the SPA
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# All other routes handled by the SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200 

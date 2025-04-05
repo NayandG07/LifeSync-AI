@@ -1,0 +1,831 @@
+/* Theme CSS Variables */
+.themed-container {
+  transition: background-color 0.3s ease;
+}
+
+.themed-content {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Neutral theme (default) */
+:root,
+.theme-neutral {
+  --page-background: #f8fafc;
+  --text-color: #0f172a;
+  --card-background: #ffffff;
+  --card-border: 1px solid rgba(0, 0, 0, 0.05);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --accent-color: #6366f1;
+  --accent-color-hover: #4f46e5;
+  --muted-color: #94a3b8;
+  --border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode overrides */
+.dark:root,
+.dark .theme-neutral {
+  --page-background: #0f172a;
+  --text-color: #f8fafc;
+  --card-background: #1e293b;
+  --card-border: 1px solid rgba(255, 255, 255, 0.05);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --accent-color: #818cf8;
+  --accent-color-hover: #6366f1;
+  --muted-color: #64748b;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Blue theme */
+.theme-blue {
+  --page-background: #f0f9ff;
+  --text-color: #0c4a6e;
+  --card-background: #f8fafc;
+  --card-border: 1px solid rgba(14, 165, 233, 0.2);
+  --card-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.1), 0 2px 4px -1px rgba(14, 165, 233, 0.06);
+  --accent-color: #0ea5e9;
+  --accent-color-hover: #0284c7;
+  --muted-color: #64748b;
+  --border-color: rgba(14, 165, 233, 0.2);
+}
+
+.dark .theme-blue {
+  --page-background: #0c4a6e;
+  --text-color: #e0f2fe;
+  --card-background: #075985;
+  --card-border: 1px solid rgba(14, 165, 233, 0.2);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --accent-color: #38bdf8;
+  --accent-color-hover: #0ea5e9;
+  --muted-color: #94a3b8;
+  --border-color: rgba(14, 165, 233, 0.3);
+}
+
+/* Purple theme */
+.theme-purple {
+  --page-background: #faf5ff;
+  --text-color: #581c87;
+  --card-background: #ffffff;
+  --card-border: 1px solid rgba(168, 85, 247, 0.2);
+  --card-shadow: 0 4px 6px -1px rgba(168, 85, 247, 0.1), 0 2px 4px -1px rgba(168, 85, 247, 0.06);
+  --accent-color: #a855f7;
+  --accent-color-hover: #9333ea;
+  --muted-color: #94a3b8;
+  --border-color: rgba(168, 85, 247, 0.2);
+}
+
+.dark .theme-purple {
+  --page-background: #3b0764;
+  --text-color: #faf5ff;
+  --card-background: #581c87;
+  --card-border: 1px solid rgba(168, 85, 247, 0.2);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --accent-color: #d8b4fe;
+  --accent-color-hover: #c084fc;
+  --muted-color: #94a3b8;
+  --border-color: rgba(168, 85, 247, 0.3);
+}
+
+/* Light Theme (default) */
+:root {
+  --page-background: #f8fafc;
+  --background-color: #ffffff;
+  --text-heading: #1f2937;
+  --text-muted: #6b7280;
+  --hover-color: #f3f4f6;
+  --primary-color: #3b82f6;
+  --navbar-bg: #ffffff;
+  --dropdown-bg: #ffffff;
+  --dropdown-border: #e5e7eb;
+  --dropdown-hover: #f3f4f6;
+  --input-bg: #ffffff;
+  --input-border: #e5e7eb;
+  --input-text: #374151;
+  --button-bg: #ffffff;
+  --button-hover: #f3f4f6;
+  --button-text: #374151;
+  --modal-bg: #ffffff;
+  --modal-border: #e5e7eb;
+  --toast-bg: #ffffff;
+  --toast-border: #e5e7eb;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme */
+.dark-theme, 
+.dark {
+  --page-background: #141e32; /* Lightened from #0f172a */
+  --background-color: #1a2439; /* Lightened from #131a2b */
+  --text-color: #e2e8f0;
+  --text-heading: #f8fafc;
+  --text-muted: #a1afc5; /* Lightened from #94a3b8 */
+  --border-color: #2a3854; /* Lightened from #1e293b */
+  --hover-color: #2a3854; /* Lightened from #1e293b */
+  --primary-color: #6366f1;
+  --card-background: #1a2439; /* Lightened from #131a2b */
+  --card-border: #2a3854; /* Lightened from #1e293b */
+  --navbar-bg: #141e32; /* Lightened from #0f172a */
+  --dropdown-bg: #1a2439;
+  --dropdown-border: #2a3854;
+  --dropdown-hover: #384766; /* Lightened for better hover visibility */
+  --input-bg: #2a3854; /* Lightened from #1e293b */
+  --input-border: #384766; /* Lightened for better visibility */
+  --input-text: #e2e8f0;
+  --button-bg: #2a3854; /* Lightened from #1e293b */
+  --button-hover: #384766; /* Lightened from #2d3748 */
+  --button-text: #e2e8f0;
+  --modal-bg: #1a2439;
+  --modal-border: #2a3854;
+  --toast-bg: #1a2439;
+  --toast-border: #2a3854;
+  --shadow-color: rgba(0, 0, 0, 0.3); /* Reduced opacity for softer shadows */
+  
+  /* Additional accent colors for dark theme matching screenshots */
+  --accent-blue: #60a5fa;
+  --accent-indigo: #818cf8;
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  --accent-red: #f87171;
+  --accent-orange: #fb923c;
+  --accent-yellow: #facc15;
+  --accent-green: #4ade80;
+  --accent-teal: #2dd4bf;
+  --accent-cyan: #22d3ee;
+}
+
+/* Base styles */
+html, body {
+  background-color: var(--page-background) !important;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.min-h-screen {
+  background-color: var(--page-background) !important;
+}
+
+/* Navbar */
+nav, header {
+  background-color: var(--navbar-bg) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 1px 3px var(--shadow-color) !important;
+}
+
+nav a, header a {
+  color: var(--text-color) !important;
+}
+
+nav a:hover, header a:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Cards */
+.card, 
+[class*="card-"],
+div[class*="rounded"] {
+  background-color: var(--card-background) !important;
+  border-color: var(--card-border) !important;
+  color: var(--text-color) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover, 
+[class*="card-"]:hover,
+div[class*="rounded"]:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Text colors */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-heading) !important;
+  font-weight: 600 !important;
+}
+
+.text-3xl {
+  color: var(--text-heading) !important;
+  font-weight: 700 !important;
+}
+
+.text-muted-foreground {
+  color: var(--text-muted) !important;
+}
+
+/* Dropdown menus */
+[role="menu"] {
+  background-color: var(--dropdown-bg) !important;
+  border: 1px solid var(--dropdown-border) !important;
+  box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color) !important;
+}
+
+[role="menuitem"] {
+  background-color: var(--dropdown-bg) !important;
+  color: var(--text-color) !important;
+}
+
+[role="menuitem"]:hover {
+  background-color: var(--dropdown-hover) !important;
+}
+
+/* Progress bars and metrics */
+.progress-bar {
+  background-color: var(--border-color) !important;
+}
+
+.progress-bar > div {
+  background-color: var(--primary-color) !important;
+}
+
+/* Buttons */
+button, 
+.btn,
+[class*="button"] {
+  border-color: var(--border-color) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+button:not([class*="bg-"]), 
+.btn:not([class*="bg-"]),
+[class*="button"]:not([class*="bg-"]) {
+  background-color: var(--button-bg) !important;
+  color: var(--button-text) !important;
+}
+
+button:hover, 
+.btn:hover,
+[class*="button"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  background-color: var(--button-hover) !important;
+}
+
+button:active, 
+.btn:active,
+[class*="button"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Health metrics and cards */
+.health-score {
+  background-color: var(--card-background) !important;
+  color: var(--text-color) !important;
+}
+
+.grid-container > div {
+  background-color: var(--card-background) !important;
+  border-color: var(--card-border) !important;
+}
+
+/* Status indicators and values */
+.status {
+  color: var(--text-muted) !important;
+}
+
+.value {
+  color: var(--text-heading) !important;
+  font-weight: 600 !important;
+}
+
+/* Specific text styles */
+.font-bold {
+  color: var(--text-heading) !important;
+}
+
+/* Container backgrounds */
+.container {
+  background-color: var(--page-background) !important;
+}
+
+/* Input fields */
+input, textarea, select {
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--input-text) !important;
+  transition: all 0.2s ease !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25) !important;
+  outline: none !important;
+}
+
+/* Modal */
+.modal-content,
+[role="dialog"],
+dialog {
+  background-color: var(--modal-bg) !important;
+  border-color: var(--modal-border) !important;
+}
+
+/* Toast notifications */
+.toast {
+  background-color: var(--toast-bg) !important;
+  border-color: var(--toast-border) !important;
+}
+
+/* Transitions */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dark theme specific adjustments */
+.dark-theme .text-gray-700,
+.dark .text-gray-700 {
+  color: var(--text-color) !important;
+}
+
+.dark-theme .bg-white,
+.dark .bg-white {
+  background-color: var(--card-background) !important;
+}
+
+/* Additional dark mode overrides */
+.dark-theme .bg-gray-50,
+.dark .bg-gray-50,
+.dark-theme [class*="bg-gray-50"],
+.dark [class*="bg-gray-50"] {
+  background-color: var(--page-background) !important;
+}
+
+.dark-theme .bg-gray-100,
+.dark .bg-gray-100,
+.dark-theme [class*="bg-gray-100"],
+.dark [class*="bg-gray-100"] {
+  background-color: var(--hover-color) !important;
+}
+
+.dark-theme .text-gray-900,
+.dark .text-gray-900 {
+  color: var(--text-heading) !important;
+}
+
+.dark-theme .text-gray-600,
+.dark .text-gray-600,
+.dark-theme .text-gray-500,
+.dark .text-gray-500 {
+  color: var(--text-color) !important;
+}
+
+.dark-theme .border-gray-200,
+.dark .border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+.dark-theme .hover\:bg-gray-100:hover,
+.dark .hover\:bg-gray-100:hover {
+  background-color: var(--hover-color) !important;
+}
+
+.dark-theme .hover\:bg-gray-50:hover,
+.dark .hover\:bg-gray-50:hover {
+  background-color: var(--hover-color) !important;
+}
+
+/* Dashboard specific dark mode overrides */
+.dark-theme .bg-gradient-to-br,
+.dark .bg-gradient-to-br,
+.dark-theme [class*="bg-gradient"],
+.dark [class*="bg-gradient"] {
+  background-image: linear-gradient(to bottom right, var(--card-background), var(--hover-color)) !important;
+}
+
+.dark-theme .shadow-lg,
+.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -2px var(--shadow-color) !important;
+}
+
+.dark-theme .shadow-md,
+.dark .shadow-md {
+  box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color) !important;
+}
+
+.dark-theme .shadow-sm,
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 var(--shadow-color) !important;
+}
+
+.dark-theme .ring-1,
+.dark .ring-1 {
+  box-shadow: 0 0 0 1px var(--border-color) !important;
+}
+
+.dark-theme .ring-2,
+.dark .ring-2 {
+  box-shadow: 0 0 0 2px var(--border-color) !important;
+}
+
+.dark-theme .ring-offset-1,
+.dark .ring-offset-1 {
+  box-shadow: 0 0 0 1px var(--page-background) !important;
+}
+
+.dark-theme .ring-offset-2,
+.dark .ring-offset-2 {
+  box-shadow: 0 0 0 2px var(--page-background) !important;
+}
+
+/* Enhanced dark mode effects */
+.dark-theme, 
+.dark {
+  /* Add subtle gradient to the page background - deep navy to darker blue */
+  background-image: linear-gradient(to bottom right, #0f172a, #0c1526) !important;
+}
+
+/* Enhanced card styling for dark mode */
+.dark-theme [class*="card"],
+.dark [class*="card"],
+.dark-theme div[class*="rounded"],
+.dark div[class*="rounded"] {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(76, 81, 191, 0.1) !important;
+  background-image: linear-gradient(to bottom, rgba(19, 26, 43, 0.9), rgba(14, 21, 36, 0.9)) !important;
+}
+
+/* Add subtle glow to buttons in dark mode */
+.dark-theme button:hover,
+.dark button:hover,
+.dark-theme .btn:hover,
+.dark .btn:hover {
+  box-shadow: 0 0 15px rgba(96, 165, 250, 0.3) !important;
+}
+
+/* Enhance primary buttons */
+.dark-theme button[class*="primary"],
+.dark button[class*="primary"],
+.dark-theme .btn-primary,
+.dark .btn-primary {
+  background-image: linear-gradient(to right, #4f46e5, #3b82f6) !important;
+  border: none !important;
+}
+
+/* Soften focus rings in dark mode */
+.dark-theme *:focus,
+.dark *:focus {
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3) !important;
+}
+
+/* Improve dark mode gradients */
+.dark-theme [class*="bg-gradient"],
+.dark [class*="bg-gradient"] {
+  background-image: linear-gradient(to bottom right, rgba(19, 26, 43, 0.9), rgba(14, 21, 36, 0.9)) !important;
+}
+
+/* Add subtle texture to background */
+.dark-theme body,
+.dark body {
+  background-image: 
+    linear-gradient(to bottom right, #0f172a, #0c1526),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e293b' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+}
+
+/* Enhance modal appearance */
+.dark-theme [role="dialog"],
+.dark [role="dialog"] {
+  background-image: linear-gradient(to bottom, rgba(30, 30, 46, 0.95), rgba(23, 23, 35, 0.95)) !important;
+  border: 1px solid rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+/* Make text more readable with better contrast */
+.dark-theme h1,
+.dark-theme h2,
+.dark-theme h3,
+.dark-theme h4,
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4 {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Improve value/metric visibility */
+.dark .value,
+.dark [class*="metric-value"],
+.dark [class*="score"],
+.dark .text-3xl,
+.dark .text-2xl {
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+
+/* Chat bubbles and messages */
+.dark [class*="chat-bubble"],
+.dark [class*="message-bubble"] {
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark [class*="user-message"] {
+  background-color: #2e4171 !important; /* Blueish tint for user messages */
+  border-color: #3a4f85 !important;
+}
+
+.dark [class*="bot-message"],
+.dark [class*="ai-message"] {
+  background-color: #2d3748 !important; /* Slightly different shade for bot */
+  border-color: #384766 !important;
+}
+
+/* Improve visibility of muted text */
+.dark .text-muted,
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark [class*="secondary-text"] {
+  color: #a1afc5 !important; /* Lighter than default muted text */
+}
+
+/* Improve scrollbars */
+.dark *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark *::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background-color: #384766;
+  border-radius: 20px;
+  border: 2px solid var(--background-color);
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+  background-color: #4a5a82;
+}
+
+/* Global theme consistency rules */
+.themed-container,
+.themed-content,
+.container,
+.main-content,
+div[class*="page-"],
+div[class*="screen-"],
+main,
+section,
+article {
+  background-color: var(--page-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Page-specific containers */
+[class*="dashboard-"],
+[class*="home-"],
+[class*="chat-"],
+[class*="symptoms-"],
+[class*="settings-"] {
+  background-color: var(--page-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Force dark mode on all card-like elements */
+.dark-theme [class*="card"],
+.dark [class*="card"],
+.dark-theme [class*="box"],
+.dark [class*="box"],
+.dark-theme [class*="panel"],
+.dark [class*="panel"],
+.dark-theme [class*="container"],
+.dark [class*="container"],
+.dark-theme div[class*="bg-white"],
+.dark div[class*="bg-white"],
+.dark-theme div[class*="bg-gray-"],
+.dark div[class*="bg-gray-"] {
+  background-color: var(--card-background) !important;
+  border-color: var(--card-border) !important;
+  color: var(--text-color) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  background-image: linear-gradient(to bottom, rgba(30, 30, 46, 0.8), rgba(20, 20, 35, 0.8)) !important;
+  border: 1px solid rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Ensure all gradients use the dark theme colors */
+.dark-theme [style*="background"],
+.dark [style*="background"] {
+  background-color: var(--card-background) !important;
+  background-image: linear-gradient(to bottom right, rgba(30, 30, 46, 0.8), rgba(25, 25, 35, 0.8)) !important;
+}
+
+/* Enforce dark text colors */
+.dark-theme p,
+.dark p,
+.dark-theme span:not([class*="text-"]),
+.dark span:not([class*="text-"]),
+.dark-theme div:not([class*="bg-"]):not([class*="background"]),
+.dark div:not([class*="bg-"]):not([class*="background"]) {
+  color: var(--text-color) !important;
+}
+
+/* Consistent headings */
+.dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5, .dark-theme h6,
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: var(--text-heading) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Chat page specific */
+.dark-theme [class*="chat-bubble"],
+.dark [class*="chat-bubble"],
+.dark-theme [class*="message-"],
+.dark [class*="message-"] {
+  background: linear-gradient(135deg, rgba(30, 30, 46, 0.9), rgba(20, 20, 35, 0.8)) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(99, 102, 241, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  color: var(--text-color) !important;
+}
+
+/* User/bot messages in chat - match the screenshot styling */
+.dark-theme [class*="user-message"],
+.dark [class*="user-message"] {
+  background-image: linear-gradient(to bottom right, rgba(79, 70, 229, 0.15), rgba(19, 26, 43, 0.9)) !important;
+}
+
+.dark-theme [class*="bot-message"],
+.dark [class*="bot-message"] {
+  background-image: linear-gradient(to bottom right, rgba(19, 26, 43, 0.9), rgba(14, 21, 36, 0.9)) !important;
+}
+
+/* Force consistent theme application */
+.themed-body {
+  background-color: var(--page-background) !important;
+  color: var(--text-color) !important;
+  background-image: 
+    linear-gradient(to bottom right, #0f172a, #0c1526),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e293b' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+}
+
+/* Fix any remaining inconsistencies */
+.dark-theme *[style*="background-color: white"],
+.dark *[style*="background-color: white"],
+.dark-theme *[style*="background-color: #fff"],
+.dark *[style*="background-color: #fff"],
+.dark-theme *[style*="background-color: rgb(255, 255, 255)"],
+.dark *[style*="background-color: rgb(255, 255, 255)"] {
+  background-color: var(--card-background) !important;
+  background-image: linear-gradient(to bottom, rgba(30, 30, 46, 0.8), rgba(20, 20, 35, 0.8)) !important;
+}
+
+/* Fix for the chat page */
+.dark-theme [class*="chat-page"],
+.dark [class*="chat-page"],
+.dark-theme [class*="chat-container"],
+.dark [class*="chat-container"] {
+  background-color: var(--page-background) !important;
+  color: var(--text-color) !important;
+}
+
+/* Fix for any embedded controls */
+.dark-theme iframe,
+.dark iframe {
+  background-color: var(--page-background) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Health metrics cards */
+.dark .health-score,
+.dark [class*="health-metric"],
+.dark [class*="dashboard-card"] {
+  background-color: var(--card-background) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+.dark .health-score:hover,
+.dark [class*="health-metric"]:hover,
+.dark [class*="dashboard-card"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Dashboard metrics and cards */
+.dark [class*="dashboard-card"],
+.dark [class*="metric-card"] {
+  background-color: #1f2942 !important; /* Slightly lighter than card background */
+  border-radius: 12px !important;
+  border: 1px solid #2d3a59 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+}
+
+/* Chart elements */
+.dark [class*="chart"],
+.dark [class*="progress"] {
+  filter: brightness(1.1) !important; /* Brighten charts for better visibility */
+}
+
+.dark [class*="chart"] text,
+.dark [class*="chart"] .tick,
+.dark [class*="chart"] .domain,
+.dark [class*="chart"] .axis {
+  color: #c2cfe0 !important; /* Lighter text for chart labels */
+  opacity: 0.9 !important;
+  stroke: #c2cfe0 !important;
+}
+
+/* Progress bars */
+.dark .progress-bar,
+.dark [class*="progress-track"] {
+  background-color: #2d3a59 !important; /* Lighter track */
+}
+
+.dark .progress-bar > div,
+.dark [class*="progress-fill"] {
+  background-color: #4f6aad !important; /* Brighter progress indicators */
+  box-shadow: 0 0 8px rgba(79, 106, 173, 0.5) !important;
+}
+
+/* Value presentation */
+.dark [class*="value-display"],
+.dark [class*="metric-value"],
+.dark [class*="score-display"] {
+  background: linear-gradient(135deg, #1f2942, #2d3a59) !important;
+  padding: 0.5rem !important;
+  border-radius: 8px !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Navigation focus and active states */
+.dark nav a.active,
+.dark header a.active,
+.dark [class*="nav-item"].active {
+  background-color: #2d3a59 !important;
+  border-left: 3px solid var(--primary-color) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.dark nav a:hover,
+.dark header a:hover,
+.dark [class*="nav-item"]:hover {
+  background-color: #2d3a59 !important;
+  transform: translateX(2px);
+  transition: all 0.2s ease;
+}
+
+/* Improved focus states */
+.dark a:focus,
+.dark button:focus,
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  outline: 2px solid var(--primary-color) !important;
+  outline-offset: 2px !important;
+}
+
+/* Health metric indicators with color coding */
+.dark [class*="indicator-good"],
+.dark [class*="status-good"],
+.dark [class*="positive"] {
+  color: #4ade80 !important; /* Brighter green */
+  font-weight: 600 !important;
+}
+
+.dark [class*="indicator-warning"],
+.dark [class*="status-warning"],
+.dark [class*="caution"] {
+  color: #facc15 !important; /* Brighter yellow */
+  font-weight: 600 !important;
+}
+
+.dark [class*="indicator-danger"],
+.dark [class*="status-bad"],
+.dark [class*="negative"] {
+  color: #fb7185 !important; /* Brighter red */
+  font-weight: 600 !important;
+}
+
+/* Dashboard buttons with icon */
+.dark [class*="icon-button"],
+.dark [class*="action-button"] {
+  background-color: #2d3a59 !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark [class*="icon-button"]:hover,
+.dark [class*="action-button"]:hover {
+  background-color: #384766 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Chat buttons styling for better visibility */
+.dark [class*="chat-button"],
+.dark [class*="send-button"] {
+  background-color: #4f6aad !important;
+  color: white !important;
+  border-radius: 50px !important;
+  box-shadow: 0 2px 8px rgba(79, 106, 173, 0.3) !important;
+}
+
+.dark [class*="chat-button"]:hover,
+.dark [class*="send-button"]:hover {
+  background-color: #6282c8 !important;
+  box-shadow: 0 4px 12px rgba(79, 106, 173, 0.5) !important;
+} 
