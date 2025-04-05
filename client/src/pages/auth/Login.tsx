@@ -107,19 +107,19 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-sm p-6 space-y-6">
-        <div className="flex flex-col items-center space-y-2 mb-4">
-          <Activity className="h-12 w-12 text-primary" />
-          <h1 className="text-2xl font-bold">Welcome to LifeSync</h1>
-          <p className="text-sm text-muted-foreground text-center">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-900">
+      <Card className="w-full max-w-sm p-8 space-y-6 bg-[#1e1e2f] border border-slate-700/50 rounded-xl shadow-none text-slate-200">
+        <div className="flex flex-col items-center space-y-3 mb-4">
+          <Activity className="h-10 w-10 text-blue-500" />
+          <h1 className="text-2xl font-bold text-white">Welcome to LifeSync</h1>
+          <p className="text-sm text-slate-400 text-center">
             Sign in to your account to continue
           </p>
         </div>
 
-        <form onSubmit={(e) => handleSubmit(e, "signin")} className="space-y-4">
+        <form onSubmit={(e) => handleSubmit(e, "signin")} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-slate-300">Email</Label>
             <Input
               id="email"
               type="email"
@@ -127,11 +127,12 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
+              className="bg-slate-800/50 border-slate-700 focus:border-blue-500 placeholder:text-slate-500 text-slate-200"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-slate-300">Password</Label>
             <Input
               id="password"
               type="password"
@@ -139,13 +140,14 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              className="bg-slate-800/50 border-slate-700 focus:border-blue-500 placeholder:text-slate-500 text-slate-200"
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3 pt-2">
             <Button 
               type="submit" 
-              className="w-full"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
               disabled={isLoading}
             >
               {isLoading ? "Loading..." : "Sign In"}
@@ -153,7 +155,7 @@ export default function Login() {
             <Button
               type="button"
               variant="outline"
-              className="w-full"
+              className="w-full border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-slate-100"
               disabled={isLoading}
               onClick={(e) => handleSubmit(e, "signup")}
             >
@@ -161,16 +163,16 @@ export default function Login() {
             </Button>
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
+                <span className="w-full border-t border-slate-700" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-[#1e1e2f] px-2 text-slate-500">Or continue with</span>
               </div>
             </div>
             <Button
               type="button"
               variant="outline"
-              className="w-full flex items-center justify-center gap-2"
+              className="w-full flex items-center justify-center gap-2 border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-slate-100"
               disabled={isLoading}
               onClick={handleGoogleSignIn}
             >
