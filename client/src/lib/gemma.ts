@@ -300,6 +300,11 @@ function cleanResponse(text: string): string {
   // Remove any User: or similar patterns that might follow
   text = text.split(/\n(?:User|Human):.*$/)[0].trim();
   
+  // Limit response length to 400 characters
+  if (text.length > 400) {
+    text = text.substring(0, 397) + "...";
+  }
+  
   // If we've stripped everything, provide a fallback response
   if (!text) {
     return "I'm here to help with your wellness journey. How can I assist you today?";
@@ -316,34 +321,34 @@ export async function analyzeSymptoms(
   severity: number = 3
 ): Promise<any> {
   try {
-    // Format the prompt for symptom analysis
+    // Format the prompt for symptom analysis with length limits
     const promptText = `
-As a medical AI assistant, analyze these symptoms and provide a detailed medical assessment:
+As a medical AI assistant, provide a brief analysis of these symptoms:
 Symptoms: ${symptoms.join(", ")}
 Body areas affected: ${bodyAreas.join(", ") || "Not specified"}
 Duration: ${duration}
 Severity (1-5): ${severity}
 
-Please output a JSON object with the following structure:
+Please output a JSON object with the following structure, keeping descriptions under 100 characters each:
 {
   "conditions": [
     {
-      "name": "Condition name",
+      "name": "Brief condition name",
       "confidence": number between 0-100,
-      "description": "Brief description of the condition",
+      "description": "Very brief description",
       "severity": "mild" OR "moderate" OR "severe" OR "emergency"
     }
   ],
   "remedies": [
     {
       "type": "home" OR "otc" OR "professional",
-      "title": "Remedy title",
-      "description": "Description of the remedy"
+      "title": "Brief title",
+      "description": "Brief action-oriented remedy"
     }
   ]
 }
 
-Only respond with valid JSON, no other text. Include 2-4 possible conditions and relevant remedies for each severity level if appropriate.
+Only respond with valid JSON. Include 2-3 most relevant conditions and 2-3 focused remedies.
 `;
 
     // Call the Gemini API via Cloudflare webhook for symptoms

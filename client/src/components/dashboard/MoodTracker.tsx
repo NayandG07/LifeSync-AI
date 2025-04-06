@@ -7,6 +7,32 @@ import { setTheme, type MoodType } from "@/lib/theme";
 import { Sun, Cloud, CloudRain, Smile, Zap, Frown, Meh, Heart, PartyPopper, Brain, Sparkles, Waves } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { gemma } from "@/lib/gemma";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
+import { saveMoodEntry, syncSavedMoods } from "@/lib/firebase";
+import { toast } from "sonner";
+
+// Mood data interface
+interface MoodData {
+  id: string;
+  mood: string;
+  intensity: number;
+  note: string;
+  timestamp: Date;
+  userId?: string;
+}
+
+// Mood analysis interface
+interface MoodAnalysis {
+  message: string;
+  suggestion: string;
+  patterns: string;
+  insights: string;
+  activities: string[];
+  musicMood: string;
+  wellnessScore: number;
+}
 
 const moodConfig = {
   happy: { 
@@ -102,6 +128,7 @@ const moodConfig = {
 } as const;
 
 export default function MoodTracker() {
+  const [user] = useAuthState(auth);
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [intensity, setIntensity] = useState([5]);
   const [note, setNote] = useState("");
@@ -111,60 +138,205 @@ export default function MoodTracker() {
   const [showDetailedAnalysis, setShowDetailedAnalysis] = useState(false);
   const [aiInsightStage, setAiInsightStage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [savedMoods, setSavedMoods] = useState<MoodData[]>([]);
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const simulateAIAnalysis = async (mood: string) => {
+  // Load saved moods from localStorage
+  useEffect(() => {
+    if (user) {
+      try {
+        const savedData = localStorage.getItem(`mood_history_${user.uid}`);
+        if (savedData) {
+          // Convert string dates back to Date objects
+          const moods: MoodData[] = JSON.parse(savedData).map((mood: any) => ({
+            ...mood,
+            timestamp: new Date(mood.timestamp)
+          }));
+          setSavedMoods(moods);
+        }
+        
+        // Attempt to sync local moods with Firestore
+        syncMoodsWithFirestore();
+      } catch (error) {
+        console.error("Error loading saved moods:", error);
+      }
+    }
+  }, [user]);
+  
+  // Function to sync locally stored moods with Firestore
+  const syncMoodsWithFirestore = async () => {
+    if (!user) return;
+    
+    try {
+      setIsSyncing(true);
+      const result = await syncSavedMoods(user.uid);
+      
+      if (result.success) {
+        if (result.message !== 'No local data to sync' && 
+            result.message !== 'No moods to sync' && 
+            result.message !== 'All moods already synced') {
+          toast.success(result.message);
+        }
+      } else {
+        console.warn("Failed to sync moods:", result.message);
+      }
+    } catch (error) {
+      console.error("Error syncing moods:", error);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  // Analyze mood using Symptom API instead of simulation
+  const analyzeMoodWithAPI = async (mood: string) => {
     setAiThinking(true);
     setAiResponse(null);
     setShowDetailedAnalysis(false);
     setAiInsightStage(0);
     
-    // Simulate AI processing with progressive insights
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setAiInsightStage(1); // Pattern Analysis
-    
-    await new Promise(resolve => setTimeout(resolve, 800));
-    setAiInsightStage(2); // Mood Correlation
-    
-    await new Promise(resolve => setTimeout(resolve, 600));
-    setAiInsightStage(3); // Activity Suggestions
-    
-    await new Promise(resolve => setTimeout(resolve, 400));
-    setAiInsightStage(4); // Final Analysis
-    
-    const moodInfo = moodConfig[mood as keyof typeof moodConfig];
-    setAiResponse({
-      message: moodInfo.message,
-      suggestion: moodInfo.suggestion
-    });
-    
-    setAiThinking(false);
-    setShowDetailedAnalysis(true);
+    try {
+      // Simulate progressive stages for UI feedback
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setAiInsightStage(1); // Pattern Analysis
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setAiInsightStage(2); // Mood Correlation
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setAiInsightStage(3); // Activity Suggestions
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setAiInsightStage(4); // Final Analysis
+      
+      // Historical mood data context
+      const moodHistory = savedMoods.map(m => m.mood).slice(0, 5).join(", ");
+      const promptSymptoms = [`Current mood: ${mood}`, `Mood intensity: ${intensity[0]}/10`];
+      
+      if (note) {
+        promptSymptoms.push(`Note: ${note}`);
+      }
+      
+      if (moodHistory) {
+        promptSymptoms.push(`Recent mood history: ${moodHistory}`);
+      }
+      
+      // Use the symptom API to analyze the mood
+      const result = await gemma.analyzeSymptoms(
+        promptSymptoms,
+        ["mental"],
+        "current",
+        intensity[0] / 2 // Convert 1-10 scale to 1-5 scale
+      );
+      
+      // Extract relevant info from the result
+      let analysis: MoodAnalysis = {
+        message: moodConfig[mood as keyof typeof moodConfig].message,
+        suggestion: moodConfig[mood as keyof typeof moodConfig].suggestion,
+        patterns: result?.conditions?.[0]?.description || moodConfig[mood as keyof typeof moodConfig].aiAnalysis.patterns,
+        insights: result?.conditions?.[1]?.description || moodConfig[mood as keyof typeof moodConfig].aiAnalysis.insights,
+        activities: result?.remedies?.map((r: any) => r.description) || moodConfig[mood as keyof typeof moodConfig].aiAnalysis.activities,
+        musicMood: moodConfig[mood as keyof typeof moodConfig].aiAnalysis.musicMood,
+        wellnessScore: result?.conditions?.[0]?.confidence || moodConfig[mood as keyof typeof moodConfig].aiAnalysis.wellnessScore
+      };
+      
+      setAiResponse({
+        message: analysis.message,
+        suggestion: analysis.suggestion
+      });
+      
+      // Store the analysis in localStorage for this mood
+      if (user) {
+        localStorage.setItem(`mood_analysis_${user.uid}_${mood}`, JSON.stringify(analysis));
+      }
+      
+      setAiThinking(false);
+      setShowDetailedAnalysis(true);
+    } catch (error) {
+      console.error("Error analyzing mood with API:", error);
+      
+      // Fallback to configured responses
+      const moodInfo = moodConfig[mood as keyof typeof moodConfig];
+      setAiResponse({
+        message: moodInfo.message,
+        suggestion: moodInfo.suggestion
+      });
+      
+      setAiThinking(false);
+      setShowDetailedAnalysis(true);
+      
+      // Show error toast
+      toast.error("Could not connect to AI service, using fallback analysis");
+    }
   };
 
   const handleMoodSelect = async (mood: string) => {
     setSelectedMood(mood);
     setShowConfetti(true);
     setTheme(mood as MoodType);
-    await simulateAIAnalysis(mood);
+    await analyzeMoodWithAPI(mood);
 
     // Reset confetti after animation
     setTimeout(() => setShowConfetti(false), 3000);
   };
 
   const handleSaveMood = async () => {
+    if (!selectedMood) return;
+    
     setIsSubmitting(true);
-    // Simulate saving the mood
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
-    // Reset mood and other states
-    setSelectedMood(null);
-    setIntensity([5]);
-    setNote("");
-    setShowConfetti(true);
-    setTheme("neutral" as MoodType);
-    setAiResponse(null);
-    setShowDetailedAnalysis(false);
-    setAiInsightStage(0);
+    
+    try {
+      const moodData: MoodData = {
+        id: Date.now().toString(),
+        mood: selectedMood,
+        intensity: intensity[0],
+        note: note,
+        timestamp: new Date()
+      };
+      
+      // Save to localStorage
+      if (user) {
+        moodData.userId = user.uid;
+        
+        // Load existing data
+        const savedData = localStorage.getItem(`mood_history_${user.uid}`);
+        let history: MoodData[] = savedData ? JSON.parse(savedData) : [];
+        
+        // Add new mood data
+        history = [moodData, ...history];
+        
+        // Save back to localStorage
+        localStorage.setItem(`mood_history_${user.uid}`, JSON.stringify(history));
+        
+        // Update state
+        setSavedMoods(history);
+        
+        // Save to Firestore if available
+        try {
+          await saveMoodEntry(user.uid, moodData);
+          console.log("Mood saved to Firestore successfully");
+        } catch (firestoreError) {
+          console.error("Error saving to Firestore, using localStorage only:", firestoreError);
+          toast.warning("Saved locally. Will sync when connection is restored");
+        }
+      }
+      
+      // Reset mood and other states
+      setSelectedMood(null);
+      setIntensity([5]);
+      setNote("");
+      setShowConfetti(true);
+      setTheme("neutral" as MoodType);
+      setAiResponse(null);
+      setShowDetailedAnalysis(false);
+      setAiInsightStage(0);
+      
+      toast.success("Mood saved successfully!");
+    } catch (error) {
+      console.error("Error saving mood:", error);
+      toast.error("Failed to save mood data");
+    } finally {
+      setIsSubmitting(false);
+    }
 
     // Reset confetti after animation
     setTimeout(() => setShowConfetti(false), 3000);
@@ -339,7 +511,22 @@ export default function MoodTracker() {
                           Wellness Score:
                         </span>
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
-                          {moodConfig[selectedMood as keyof typeof moodConfig].aiAnalysis.wellnessScore}
+                          {(() => {
+                            // Get analysis data from localStorage if available
+                            if (user && selectedMood) {
+                              try {
+                                const analysisData = localStorage.getItem(`mood_analysis_${user.uid}_${selectedMood}`);
+                                if (analysisData) {
+                                  const analysis = JSON.parse(analysisData);
+                                  return analysis.wellnessScore;
+                                }
+                              } catch (e) {
+                                console.error("Error loading analysis data:", e);
+                              }
+                            }
+                            // Fallback to hardcoded data
+                            return moodConfig[selectedMood as keyof typeof moodConfig].aiAnalysis.wellnessScore;
+                          })()}
                         </div>
                       </div>
                     </div>
@@ -348,16 +535,77 @@ export default function MoodTracker() {
                       <div className="p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
                         <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Pattern Analysis</h4>
                         <p className="text-sm text-gray-600 dark:text-gray-300">
-                          {moodConfig[selectedMood as keyof typeof moodConfig].aiAnalysis.patterns}
+                          {(() => {
+                            // Get analysis data from localStorage if available
+                            if (user && selectedMood) {
+                              try {
+                                const analysisData = localStorage.getItem(`mood_analysis_${user.uid}_${selectedMood}`);
+                                if (analysisData) {
+                                  const analysis = JSON.parse(analysisData);
+                                  return analysis.patterns;
+                                }
+                              } catch (e) {
+                                console.error("Error loading analysis data:", e);
+                              }
+                            }
+                            // Fallback to hardcoded data
+                            return moodConfig[selectedMood as keyof typeof moodConfig].aiAnalysis.patterns;
+                          })()}
                         </p>
                       </div>
 
                       <div className="p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
                         <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Key Insights</h4>
                         <p className="text-sm text-gray-600 dark:text-gray-300">
-                          {moodConfig[selectedMood as keyof typeof moodConfig].aiAnalysis.insights}
+                          {(() => {
+                            // Get analysis data from localStorage if available
+                            if (user && selectedMood) {
+                              try {
+                                const analysisData = localStorage.getItem(`mood_analysis_${user.uid}_${selectedMood}`);
+                                if (analysisData) {
+                                  const analysis = JSON.parse(analysisData);
+                                  return analysis.insights;
+                                }
+                              } catch (e) {
+                                console.error("Error loading analysis data:", e);
+                              }
+                            }
+                            // Fallback to hardcoded data
+                            return moodConfig[selectedMood as keyof typeof moodConfig].aiAnalysis.insights;
+                          })()}
                         </p>
                       </div>
+                    </div>
+
+                    {/* Add recommended activities based on mood analysis */}
+                    <div className="p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Recommended Activities</h4>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {(() => {
+                          // Get analysis data from localStorage if available
+                          if (user && selectedMood) {
+                            try {
+                              const analysisData = localStorage.getItem(`mood_analysis_${user.uid}_${selectedMood}`);
+                              if (analysisData) {
+                                const analysis = JSON.parse(analysisData);
+                                return analysis.activities.map((activity: string, i: number) => (
+                                  <li key={i} className="text-sm text-gray-600 dark:text-gray-300">{activity}</li>
+                                ));
+                              }
+                            } catch (e) {
+                              console.error("Error loading analysis data:", e);
+                            }
+                          }
+                          // Fallback to hardcoded data
+                          return moodConfig[selectedMood as keyof typeof moodConfig].aiAnalysis.activities.map((activity, i) => (
+                            <li key={i} className="text-sm text-gray-600 dark:text-gray-300">{activity}</li>
+                          ));
+                        })()}
+                      </ul>
+                    </div>
+                    
+                    <div className="text-center pt-2">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">Analysis powered by AI based on your mood data</span>
                     </div>
                   </div>
                 </div>

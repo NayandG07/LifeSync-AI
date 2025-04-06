@@ -23,7 +23,8 @@ import {
   Firestore,
   addDoc,
   getDocs,
-  deleteDoc
+  deleteDoc,
+  writeBatch
 } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 import { Message } from './types';
@@ -108,6 +109,116 @@ export const saveMoodEntry = async (userId: string, moodData: any) => {
   });
 };
 
+// Helper to check if Firestore is available and working
+const isFirestoreAvailable = async () => {
+  try {
+    // First check if we're online at all
+    if (!navigator.onLine) {
+      return false;
+    }
+
+    // Try to get a reference to Firestore
+    if (!db) {
+      return false;
+    }
+
+    // Try a lightweight operation - just get a reference without actually querying
+    const testRef = collection(db, 'test_connection');
+    return true;
+  } catch (error) {
+    console.error("Firestore availability check failed:", error);
+    return false;
+  }
+};
+
+// Sync locally stored moods with Firestore when connection is restored
+export const syncSavedMoods = async (userId: string) => {
+  try {
+    // First check if we're online
+    if (!navigator.onLine) {
+      console.log('Device is offline, skipping mood sync');
+      return { success: false, message: 'Device is offline' };
+    }
+
+    // Check Firestore availability
+    const firestoreAvailable = await isFirestoreAvailable();
+    if (!firestoreAvailable) {
+      console.log('Firestore is not available, skipping mood sync');
+      return { success: false, message: 'Firestore is not available' };
+    }
+
+    // Get locally stored moods
+    const localData = localStorage.getItem(`mood_history_${userId}`);
+    if (!localData) {
+      return { success: true, message: 'No local data to sync' };
+    }
+
+    const localMoods = JSON.parse(localData);
+    if (!Array.isArray(localMoods) || localMoods.length === 0) {
+      return { success: true, message: 'No moods to sync' };
+    }
+
+    // Use a more reliable way to check existing moods
+    let batch = writeBatch(db);
+    let syncCount = 0;
+
+    for (const mood of localMoods) {
+      try {
+        // Check if this mood already exists
+        const moodQuery = query(
+          moodEntriesCollection,
+          where('id', '==', mood.id),
+          where('userId', '==', userId),
+          limit(1)
+        );
+
+        const existingMood = await getDocs(moodQuery);
+        
+        if (existingMood.empty) {
+          // Only add moods that don't exist yet
+          const moodRef = doc(moodEntriesCollection);
+          batch.set(moodRef, {
+            ...mood,
+            userId,
+            timestamp: typeof mood.timestamp === 'string' 
+              ? Timestamp.fromDate(new Date(mood.timestamp)) 
+              : Timestamp.fromDate(mood.timestamp)
+          });
+          syncCount++;
+        }
+
+        // Commit batch if we've accumulated enough operations
+        if (syncCount > 0 && syncCount % 500 === 0) {
+          await batch.commit();
+          batch = writeBatch(db); // Start a new batch
+        }
+      } catch (error) {
+        console.error('Error processing mood:', error);
+        continue; // Skip this mood but continue with others
+      }
+    }
+
+    // Commit any remaining operations
+    if (syncCount % 500 !== 0 && syncCount > 0) {
+      await batch.commit();
+    }
+
+    return {
+      success: true,
+      message: syncCount > 0 
+        ? `Successfully synced ${syncCount} moods to Firestore`
+        : 'All moods already synced'
+    };
+  } catch (error) {
+    console.error('Error syncing moods:', error);
+    return {
+      success: false,
+      message: 'Failed to sync mood data to Firestore',
+      error
+    };
+  }
+};
+
 export const updateWaterIntake = async (userId: string, intakeData: any) => {
   const docRef = doc(waterIntakeCollection, userId);
   await setDoc(docRef, {
@@ -124,19 +235,6 @@ export const updateMedications = async (userId: string, medicationData: any) => 
     timestamp: Timestamp.now(),
     userId
   }, { merge: true });
-};
-
-// Helper to check if Firestore is available and working
-const isFirestoreAvailable = async () => {
-  try {
-    // Try a simple operation to test Firestore connectivity
-    const testQuery = query(collection(db, 'test_connection'));
-    await getDocs(testQuery);
-    return true;
-  } catch (error) {
-    console.error("Firestore connection test failed:", error);
-    return false;
-  }
 };
 
 // Function to save chat messages with built-in error handling
