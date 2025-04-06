@@ -7,6 +7,9 @@ NODE_VERSION = "18.18.0"
 NPM_VERSION = "9.6.7"
 VITE_EXTERNAL_PACKAGES = "@radix-ui/react-icons"
 NODE_OPTIONS = "--max_old_space_size=4096"
+# Add Cloudflare webhook URLs as environment variables (update these in Netlify dashboard)
+VITE_SYMPTOM_API_URL = "https://gemini-cloudflare-webhook.nayandg8.workers.dev/"
+VITE_CHAT_API_URL = "https://gemini-therapist-webhook.nayandg8.workers.dev/"
 
 [dev]
 command = "cd client && npm run dev"

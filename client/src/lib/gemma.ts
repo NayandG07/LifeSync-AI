@@ -5,15 +5,19 @@ interface ImportMetaEnv {
   DEV: boolean;
   PROD: boolean;
   MODE: string;
+  VITE_SYMPTOM_API_URL: string;
+  VITE_CHAT_API_URL: string;
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-// API configuration - Using Cloudflare webhook for Gemini API instead of Netlify function
-const SYMPTOM_API_URL = "https://gemini-cloudflare-webhook.nayandg8.workers.dev/";
-const CHAT_API_URL = "https://gemini-therapist-webhook.nayandg8.workers.dev/";
+// API configuration - Using Cloudflare webhook for Gemini API via environment variables
+const SYMPTOM_API_URL = import.meta.env.VITE_SYMPTOM_API_URL || 
+  "https://gemini-cloudflare-webhook.nayandg8.workers.dev/"; // Fallback for backwards compatibility
+const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL || 
+  "https://gemini-therapist-webhook.nayandg8.workers.dev/"; // Fallback for backwards compatibility
 
 // Note: API key is no longer needed since we're using Cloudflare webhooks
 // that handle the API key on the server side
