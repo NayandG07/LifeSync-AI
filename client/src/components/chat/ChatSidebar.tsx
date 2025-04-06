@@ -53,6 +53,7 @@ export default function ChatSidebar({
   const [searchQuery, setSearchQuery] = useState("");
   const [userName, setUserName] = useState<string>("");
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [tabToDelete, setTabToDelete] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'recent' | 'favorites'>('all');
   
   // Filter tabs based on search query and category
@@ -119,6 +120,25 @@ export default function ChatSidebar({
       console.error("Error deleting conversations:", error);
       toast.error("Failed to delete conversations. Please try again.");
     }
+  };
+
+  // Handle individual chat deletion
+  const handleDeleteChat = (tabId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setTabToDelete(tabId);
+  };
+
+  // Confirm individual chat deletion
+  const confirmDeleteChat = (e: React.MouseEvent) => {
+    if (tabToDelete) {
+      onTabClose(tabToDelete, e);
+      setTabToDelete(null);
+    }
+  };
+
+  // Cancel individual chat deletion
+  const cancelDeleteChat = () => {
+    setTabToDelete(null);
   };
 
   return (
@@ -280,7 +300,7 @@ export default function ChatSidebar({
                     
                     {/* Close Button */}
                     <motion.button 
-                      onClick={(e) => onTabClose(tab.id, e)}
+                      onClick={(e) => handleDeleteChat(tab.id, e)}
                       whileHover={{ scale: 1.1, rotate: 90 }}
                       whileTap={{ scale: 0.9 }}
                       className="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
@@ -345,7 +365,7 @@ export default function ChatSidebar({
 
       {/* Delete confirmation dialog with improved animation */}
       <AnimatePresence>
-        {isDeleteDialogOpen && (
+        {(isDeleteDialogOpen || tabToDelete) && (
           <motion.div 
             className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
@@ -359,25 +379,38 @@ export default function ChatSidebar({
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             >
-              <h3 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-200">Delete All Conversations</h3>
+              <h3 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-200">
+                {isDeleteDialogOpen ? "Delete All Conversations" : "Delete Conversation"}
+              </h3>
               <p className="text-slate-600 dark:text-slate-400 mb-6">
-                Are you sure you want to delete all conversations? This action cannot be undone.
+                {isDeleteDialogOpen 
+                  ? "Are you sure you want to delete all conversations? This action cannot be undone."
+                  : "Are you sure you want to delete this conversation? This action cannot be undone."}
               </p>
               <div className="flex space-x-3 justify-end">
                 <Button 
                   variant="outline" 
-                  onClick={() => setIsDeleteDialogOpen(false)}
+                  onClick={() => {
+                    setIsDeleteDialogOpen(false);
+                    cancelDeleteChat();
+                  }}
                   className="border-slate-200 dark:border-slate-700"
                 >
                   Cancel
                 </Button>
                 <Button 
                   variant="destructive" 
-                  onClick={handleDeleteAllConversations}
+                  onClick={(e) => {
+                    if (isDeleteDialogOpen) {
+                      handleDeleteAllConversations();
+                    } else {
+                      confirmDeleteChat(e);
+                    }
+                  }}
                   className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
                 >
                   <Trash className="h-4 w-4 mr-2" />
-                  Delete All
+                  {isDeleteDialogOpen ? "Delete All" : "Delete"}
                 </Button>
               </div>
             </motion.div>
