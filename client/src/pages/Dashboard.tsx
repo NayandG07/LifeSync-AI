@@ -45,7 +45,13 @@ import {
   FileText,
   Tag,
   Palette,
-  Image
+  Image,
+  PlusCircle,
+  FrownIcon,
+  MehIcon,
+  SmileIcon,
+  BrainCircuit,
+  AlertTriangle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -1058,10 +1064,8 @@ export default function Dashboard() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8 relative overflow-hidden group hover:shadow-xl transform-gpu transition-all duration-300 hover:scale-[1.02] cursor-pointer border-[3px] border-gradient-to-r from-blue-300 to-indigo-300 dark:from-blue-700/50 dark:to-indigo-700/50"
+          className="bg-white dark:bg-gray-800 rounded-2xl p-8 mb-8 relative overflow-hidden border border-gray-200 dark:border-gray-700"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          
           <div className="grid md:grid-cols-3 gap-8">
             {/* Main Score */}
             <div className="relative">
@@ -1076,7 +1080,7 @@ export default function Dashboard() {
               </div>
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white w-32 h-32 rounded-2xl flex items-center justify-center text-4xl font-bold shadow-lg relative overflow-hidden"
+                className="mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white w-32 h-32 rounded-xl flex items-center justify-center text-4xl font-bold relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
                 <div className="text-center">
@@ -1139,17 +1143,17 @@ export default function Dashboard() {
                 Today's Recommendations
               </h4>
               <div className="space-y-3">
-                <div className="flex items-start gap-3 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                <div className="flex items-start gap-3 p-3 rounded-lg border border-blue-100 dark:border-blue-800/30">
                   <Activity className="w-4 h-4 text-blue-500 mt-0.5" />
-                  <p className="text-sm text-blue-700 dark:text-blue-300">Take a 20-minute walk to improve your physical score</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">Take a 20-minute walk to improve your physical score</p>
                 </div>
-                <div className="flex items-start gap-3 bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg">
+                <div className="flex items-start gap-3 p-3 rounded-lg border border-purple-100 dark:border-purple-800/30">
                   <Clock className="w-4 h-4 text-purple-500 mt-0.5" />
-                  <p className="text-sm text-purple-700 dark:text-purple-300">Try to get 7-8 hours of sleep tonight</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">Try to get 7-8 hours of sleep tonight</p>
                 </div>
-                <div className="flex items-start gap-3 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
+                <div className="flex items-start gap-3 p-3 rounded-lg border border-green-100 dark:border-green-800/30">
                   <Droplet className="w-4 h-4 text-green-500 mt-0.5" />
-                  <p className="text-sm text-green-700 dark:text-green-300">Drink 500ml more water to meet your daily goal</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">Drink 500ml more water to meet your daily goal</p>
                 </div>
               </div>
             </div>
@@ -1199,14 +1203,10 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative overflow-hidden group hover:shadow-2xl transform-gpu transition-all duration-300 hover:scale-[1.02] cursor-pointer border-[3px] border-red-200 dark:border-red-800/50 hover:shadow-red-100/50 dark:hover:shadow-red-900/30"
+            className="bg-white dark:bg-gray-800 rounded-xl p-6 relative overflow-hidden border border-gray-200 dark:border-gray-700"
           >
-            {/* Background effects */}
-            <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-red-500/10 rounded-full blur-xl transform group-hover:scale-150 transition-all duration-500"></div>
-            
             {/* WHO Guidelines Overlay */}
-            <div className="absolute inset-0 bg-white/95 dark:bg-gray-800/95 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-between pointer-events-none z-10">
+            <div className="absolute inset-0 bg-white/95 dark:bg-gray-800/95 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-between pointer-events-none z-10">
               <div>
                 <h5 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-2">WHO Heart Rate Guidelines</h5>
                 <div className="space-y-3">
@@ -1235,7 +1235,7 @@ export default function Dashboard() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-3 mt-4">
+              <div className="p-3 mt-4 border border-red-100 dark:border-red-800/50 rounded-lg">
                 <p className="text-sm text-red-600 dark:text-red-400">
                   <span className="font-medium">Health Tip:</span> Regular cardiovascular exercise can help maintain a healthy resting heart rate.
                 </p>
@@ -1247,7 +1247,7 @@ export default function Dashboard() {
                 <Heart className="w-5 h-5 text-red-500" />
                 Heart Rate
               </h4>
-              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-xs font-medium text-red-700 dark:text-red-300">
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-red-700 dark:text-red-300 border border-red-100 dark:border-red-800/50">
                 <Brain className="w-3 h-3" />
                 Live Monitoring
               </div>
@@ -1258,7 +1258,7 @@ export default function Dashboard() {
                 <p className="text-3xl font-bold text-red-500 mb-1">72 BPM</p>
                 <div className="flex items-center gap-2">
                   <p className="text-gray-600 dark:text-gray-400">Status: Normal</p>
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-400">
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border border-green-100 dark:border-green-800/30 text-green-800 dark:text-green-400">
                     WHO Recommended
                   </span>
                 </div>
@@ -1281,7 +1281,7 @@ export default function Dashboard() {
                     className="h-full bg-gradient-to-r from-red-500 to-red-600 rounded-full transition-all duration-300"
                     style={{ width: '51.4%' }}
                   >
-                    <div className="w-3 h-3 bg-white rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 shadow-lg"></div>
+                    <div className="w-3 h-3 bg-white rounded-full absolute right-0 top-1/2 transform -translate-y-1/2"></div>
                   </div>
                 </div>
                 <div className="flex justify-between text-xs">
@@ -1311,61 +1311,14 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative overflow-hidden group hover:shadow-2xl transform-gpu transition-all duration-300 hover:scale-[1.02] cursor-pointer border-[3px] border-emerald-200 dark:border-emerald-800/50 hover:shadow-emerald-100/50 dark:hover:shadow-emerald-900/30"
+            className="bg-white dark:bg-gray-800 rounded-xl p-6 relative overflow-hidden border border-gray-200 dark:border-gray-700"
           >
-            {/* Background effects */}
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl transform group-hover:scale-150 transition-all duration-500"></div>
-            
-            {/* WHO Guidelines Overlay */}
-            <div className="absolute inset-0 bg-white/95 dark:bg-gray-800/95 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-between pointer-events-none z-10">
-              <div>
-                <h5 className="text-lg font-semibold text-emerald-600 dark:text-emerald-400 mb-2">WHO Blood Pressure Guidelines</h5>
-                <div className="space-y-3">
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Maintaining a healthy blood pressure is crucial for cardiovascular health:
-                  </p>
-                  <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="w-4 h-4 mt-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                      </span>
-                      <span>Normal blood pressure: &lt;120/80 mmHg</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-4 h-4 mt-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                      </span>
-                      <span>Elevated: 120-129/80-89 mmHg</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-4 h-4 mt-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                      </span>
-                      <span>Stage 1: 130-139/80-89 mmHg</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-4 h-4 mt-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                      </span>
-                      <span>Stage 2: ≥140/≥90 mmHg</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-3 mt-4">
-                <p className="text-sm text-emerald-600 dark:text-emerald-400">
-                  <span className="font-medium">Health Tip:</span> Regular cardiovascular exercise and a healthy diet can help maintain a healthy blood pressure.
-                </p>
-              </div>
-            </div>
-
             <div className="flex justify-between items-start mb-4">
               <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <Activity className="w-5 h-5 text-emerald-500" />
+                <Activity className="w-5 h-5 text-indigo-500" />
                 Blood Pressure
               </h4>
-              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/50">
                 <Brain className="w-3 h-3" />
                 AI Monitored
               </div>
@@ -1373,75 +1326,50 @@ export default function Dashboard() {
 
             <div className="space-y-4">
               <div>
-                <p className="text-3xl font-bold text-emerald-500 mb-1">120/80</p>
+                <p className="text-3xl font-bold text-indigo-500 mb-1">115/75</p>
                 <div className="flex items-center gap-2">
-                  <p className="text-gray-600 dark:text-gray-400">Status: Normal</p>
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-400">
-                    WHO Normal Range
+                  <p className="text-gray-600 dark:text-gray-400">Status: Optimal</p>
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border border-green-100 dark:border-green-800/30 text-green-800 dark:text-green-400">
+                    WHO Optimal
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                    <span className="text-sm text-emerald-600 dark:text-emerald-400">Systolic</span>
-                    <span className="text-xs text-gray-500">120 mmHg</span>
-                  </div>
-                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden relative">
-                    <div className="absolute inset-0 flex">
-                      <div className="bg-green-200/50 dark:bg-green-900/30 flex-1" style={{ width: '40%' }}></div>
-                      <div className="bg-yellow-200/50 dark:bg-yellow-900/30 flex-1" style={{ width: '20%' }}></div>
-                      <div className="bg-orange-200/50 dark:bg-orange-900/30 flex-1" style={{ width: '20%' }}></div>
-                      <div className="bg-red-200/50 dark:bg-red-900/30 flex-1" style={{ width: '20%' }}></div>
+                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Systolic</div>
+                  <div className="space-y-1">
+                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-full bg-indigo-500 rounded-full" style={{ width: '55%' }}></div>
                     </div>
-                    <div 
-                      className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-300"
-                      style={{ width: '60%' }}
-                    >
-                      <div className="w-2 h-2 bg-white rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 shadow-lg"></div>
+                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                      <span>90</span>
+                      <span>120</span>
+                      <span>140+</span>
                     </div>
-                  </div>
-                  <div className="flex justify-between text-xs mt-1">
-                    <span className="text-emerald-500">&lt;120</span>
-                    <span className="text-yellow-500">120-129</span>
-                    <span className="text-orange-500">130-139</span>
-                    <span className="text-red-500">&gt;140</span>
                   </div>
                 </div>
-
+                
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-emerald-600 dark:text-emerald-400">Diastolic</span>
-                    <span className="text-xs text-gray-500">80 mmHg</span>
-                  </div>
-                  <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden relative">
-                    <div className="absolute inset-0 flex">
-                      <div className="bg-green-200/50 dark:bg-green-900/30 flex-1" style={{ width: '40%' }}></div>
-                      <div className="bg-yellow-200/50 dark:bg-yellow-900/30 flex-1" style={{ width: '20%' }}></div>
-                      <div className="bg-orange-200/50 dark:bg-orange-900/30 flex-1" style={{ width: '20%' }}></div>
-                      <div className="bg-red-200/50 dark:bg-red-900/30 flex-1" style={{ width: '20%' }}></div>
+                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Diastolic</div>
+                  <div className="space-y-1">
+                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-full bg-indigo-500 rounded-full" style={{ width: '50%' }}></div>
                     </div>
-                    <div 
-                      className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-300"
-                      style={{ width: '50%' }}
-                    >
-                      <div className="w-2 h-2 bg-white rounded-full absolute right-0 top-1/2 transform -translate-y-1/2 shadow-lg"></div>
+                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                      <span>60</span>
+                      <span>80</span>
+                      <span>90+</span>
                     </div>
-                  </div>
-                  <div className="flex justify-between text-xs mt-1">
-                    <span className="text-emerald-500">&lt;80</span>
-                    <span className="text-yellow-500">80-84</span>
-                    <span className="text-orange-500">85-89</span>
-                    <span className="text-red-500">&gt;90</span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                <p className="text-xs text-emerald-600 dark:text-emerald-400">
-                  <span className="font-medium">AI Analysis:</span> Your blood pressure is in the normal range (120/80 mmHg).
-                </p>
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-500 dark:text-gray-400">Optimal: Under 120/80</span>
+                  <span className="text-indigo-600 dark:text-indigo-400">Last: 118/78</span>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -1936,41 +1864,49 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.02 }}
             transition={{ delay: 0.4 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative overflow-hidden group hover:shadow-2xl transform-gpu transition-all duration-300 hover:scale-[1.02] cursor-pointer flex flex-col h-full justify-between border-[3px] border-gradient-to-r from-purple-300 to-indigo-300 dark:from-purple-700/50 dark:to-indigo-700/50 hover:shadow-purple-100/50 dark:hover:shadow-purple-900/30"
+            className="bg-white/95 dark:bg-gray-800/95 rounded-xl p-6 relative overflow-hidden flex flex-col h-full justify-between border border-purple-100/70 dark:border-purple-800/50 shadow-sm hover:shadow-md transition-all duration-300 group/main"
           >
-            <div className="absolute -inset-[1px] bg-gradient-to-r from-purple-300 to-indigo-300 dark:from-purple-700 dark:to-indigo-700 opacity-20 rounded-2xl blur-[2px] group-hover:opacity-30"></div>
-            <div>
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/10 rounded-full blur-xl transform group-hover:scale-150 transition-opacity"></div>
-
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+            {/* Background gradient for entire medication card */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-indigo-500/15 opacity-70 group-hover/main:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute -right-20 -top-20 w-40 h-40 bg-purple-500/10 rounded-full blur-2xl transform scale-100 group-hover/main:scale-150 transition-all duration-300"></div>
+            
+            <div className="relative z-10">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                     <Heart className="w-5 h-5 text-red-500" />
-                  Medications
-                </h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage your medications</p>
-              </div>
-              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-xs font-medium text-purple-700 dark:text-purple-300">
+                    Medications
+                  </h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage your medications</p>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 bg-white/60 dark:bg-gray-800/60">
                   <Brain className="w-3 h-3" />
-                Smart Reminders
+                  Smart Reminders
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-4 mb-6">
-                <div className="p-4 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border border-purple-100 dark:border-purple-800 shadow-inner">
-                  <div className="flex items-center justify-between mb-3">
+              <div className="space-y-4 mb-6">
+                <div className="p-4 rounded-xl border border-purple-200/70 dark:border-purple-800/50 transition-all duration-300 hover:shadow-md group/card relative overflow-hidden bg-white/80 dark:bg-gray-800/80">
+                  {/* Background gradient always visible, more opaque on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-indigo-500/15 opacity-70 group-hover/card:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="flex items-center justify-between mb-3 relative z-10">
                     <p className="font-medium text-purple-700 dark:text-purple-300">Medication Status</p>
-                    <div className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700 px-2 py-1 rounded-full text-xs flex items-center">
+                    <div className="border border-purple-200 dark:border-purple-700 px-2 py-1 rounded-full text-xs flex items-center text-purple-700 dark:text-purple-300 bg-white/70 dark:bg-gray-800/70">
                       <Clock className="w-3 h-3 mr-1" />
                       Today
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     {medications.filter(med => med.status === 'pending').length === 0 ? (
-                      <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-purple-100 dark:border-purple-900/30 flex items-center justify-between">
-                        <p className="text-gray-700 dark:text-gray-300">No medications recorded for today</p>
-                        <Pill className="w-5 h-5 text-purple-500" />
+                      <div className="p-3 bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-sm border border-purple-200/70 dark:border-purple-900/30 flex items-center justify-between relative overflow-hidden group transition-all duration-300 hover:shadow-md">
+                        {/* Hover animation elements - light gradient always visible */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/15 to-indigo-500/20 opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/20 rounded-full blur-xl transform scale-100 group-hover:scale-150 transition-all duration-300"></div>
+                        
+                        {/* Content */}
+                        <p className="text-gray-700 dark:text-gray-300 relative z-10">No medications recorded for today</p>
+                        <Pill className="w-5 h-5 text-purple-500 relative z-10 transition-transform duration-300 group-hover:scale-110" />
                       </div>
                     ) : (
                       // Get the next upcoming medication based on time of intake
@@ -2067,8 +2003,12 @@ export default function Dashboard() {
                         if (futureDateMeds.length > 0) {
                           const nextMed = futureDateMeds[0];
                           return (
-                            <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-purple-100 dark:border-purple-900/30">
-                              <div className="flex items-center justify-between">
+                            <div className="p-3 bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-sm border border-purple-200/70 dark:border-purple-900/30 relative overflow-hidden group/future transition-all duration-300 hover:shadow-md">
+                              {/* Gradient effect */}
+                              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/15 to-indigo-500/20 opacity-70 group-hover/future:opacity-100 transition-opacity duration-300"></div>
+                              <div className="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/20 rounded-full blur-xl transform scale-100 group-hover/future:scale-150 transition-all duration-300"></div>
+                              
+                              <div className="flex items-center justify-between relative z-10">
                                 <div>
                                   <p className="font-medium text-gray-900 dark:text-gray-100">{nextMed.name}</p>
                                   <div className="flex items-center gap-2 mt-1">
@@ -2077,7 +2017,7 @@ export default function Dashboard() {
                                     <span className="text-xs text-gray-500 dark:text-gray-400">Starts {new Date(nextMed.startDate).toLocaleDateString()}</span>
                                   </div>
                                 </div>
-                                <Pill className="w-5 h-5 text-purple-500" />
+                                <Pill className="w-5 h-5 text-purple-500 transition-transform duration-300 group-hover/future:scale-110" />
                               </div>
                             </div>
                           );
@@ -2085,9 +2025,13 @@ export default function Dashboard() {
                         
                         // Fallback (should never happen if we have medications and this code runs)
                         return (
-                          <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-purple-100 dark:border-purple-900/30 flex items-center justify-between">
-                            <p className="text-gray-700 dark:text-gray-300">No pending medications found</p>
-                            <Pill className="w-5 h-5 text-purple-500" />
+                          <div className="p-3 bg-white/80 dark:bg-gray-800/80 rounded-lg shadow-sm border border-purple-200/70 dark:border-purple-900/30 flex items-center justify-between relative overflow-hidden group/fallback transition-all duration-300 hover:shadow-md">
+                            {/* Gradient effect */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/15 to-indigo-500/20 opacity-70 group-hover/fallback:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/20 rounded-full blur-xl transform scale-100 group-hover/fallback:scale-150 transition-all duration-300"></div>
+                            
+                            <p className="text-gray-700 dark:text-gray-300 relative z-10">No pending medications found</p>
+                            <Pill className="w-5 h-5 text-purple-500 relative z-10 transition-transform duration-300 group-hover/fallback:scale-110" />
                           </div>
                         );
                       })()
@@ -2095,35 +2039,42 @@ export default function Dashboard() {
                   </div>
               </div>
 
-                <div className="flex items-center gap-2 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg text-sm text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
-                  <Activity className="w-4 h-4 text-indigo-500" />
-                  <span>AI will help track your medication schedule and send reminders</span>
+                <div className="flex items-center gap-2 p-3 bg-indigo-50/70 dark:bg-indigo-900/20 rounded-lg text-sm text-indigo-700 dark:text-indigo-300 border border-indigo-200/70 dark:border-indigo-800 relative overflow-hidden group/ai transition-all duration-300 hover:shadow-md">
+                  {/* Hover animation for AI section - light gradient always visible */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/15 to-purple-500/20 opacity-70 group-hover/ai:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute -left-4 -bottom-4 w-20 h-20 bg-indigo-500/20 rounded-full blur-xl transform scale-100 group-hover/ai:scale-150 transition-all duration-300"></div>
+                  
+                  {/* Content */}
+                  <Activity className="w-4 h-4 text-indigo-500 relative z-10 transition-transform duration-300 group-hover/ai:scale-110" />
+                  <span className="relative z-10">AI will help track your medication schedule and send reminders</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-2 mt-auto">
+            <div className="flex gap-2 mt-auto relative z-10">
               <Button 
                 variant="default" 
-                className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white shadow-md hover:shadow-lg transition-all duration-300 active:scale-95 transform hover:-translate-y-1"
+                className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white shadow-md hover:shadow-lg transition-all duration-300 active:scale-95 transform hover:-translate-y-1 relative overflow-hidden group"
                 onClick={(e) => {
                   e.stopPropagation();
                   safelyOpenModal(setShowMedicationsModal);
                 }}
               >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Medication
+                <div className="absolute inset-0 bg-white/15 opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <Plus className="w-4 h-4 mr-2 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10">Add Medication</span>
               </Button>
               <Button
                 variant="outline"
-                className="bg-white dark:bg-gray-800 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 active:scale-95 transform hover:-translate-y-1 hover:shadow-md"
+                className="bg-white/80 dark:bg-gray-800/80 border-purple-200/70 dark:border-purple-800 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 active:scale-95 transform hover:-translate-y-1 hover:shadow-md relative overflow-hidden group"
                 onClick={(e) => {
                   e.stopPropagation();
                   safelyOpenModal(setShowMedicationsHistory);
                 }}
               >
-                <History className="w-4 h-4 mr-2" />
-                Medication Tracker
+                <div className="absolute inset-0 bg-purple-500/10 opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <History className="w-4 h-4 mr-2 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+                <span className="relative z-10">Medication Tracker</span>
               </Button>
             </div>
           </motion.div>
@@ -2220,7 +2171,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="flex gap-2 mt-auto">
+            <div className="flex gap-2 mt-auto relative z-10">
               <Button 
                 variant="default" 
                 className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-md hover:shadow-lg transition-all duration-300 active:scale-95 transform hover:-translate-y-1"
@@ -3211,10 +3162,10 @@ export default function Dashboard() {
 
         {/* Add the Edit Medication modal */}
         <Dialog open={showEditMedicationModal} onOpenChange={setShowEditMedicationModal}>
-          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto shadow-xl dark:shadow-purple-900/20 bg-white dark:bg-gray-800/95 backdrop-blur border border-purple-100 dark:border-purple-900">
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800/95 backdrop-blur border border-gray-200 dark:border-gray-700">
             <DialogHeader className="space-y-2">
               <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/50">
+                <div className="p-2 rounded-full border border-purple-200 dark:border-purple-700">
                   <Pencil className="h-5 w-5 text-purple-600 dark:text-purple-300" />
                 </div>
                 Edit Medication
@@ -3226,7 +3177,7 @@ export default function Dashboard() {
             
             {selectedMedication && (
               <div className="space-y-6 py-4">
-                <div className="space-y-4 p-5 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl border border-purple-100 dark:border-purple-800/50 shadow-sm">
+                <div className="space-y-4 p-5 rounded-xl border border-gray-200 dark:border-gray-700">
                   <div className="space-y-3">
                     <h3 className="text-sm font-medium text-purple-800 dark:text-purple-200 flex items-center gap-1.5">
                       <Pill className="w-3.5 h-3.5" />

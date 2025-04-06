@@ -45,25 +45,25 @@ const Symptoms = lazy(() => import('@/pages/Symptoms'));
 
 // Loading Fallback Component
 const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50/20 to-indigo-50/20 dark:from-gray-900/20 dark:to-gray-800/20 themed-container">
-    <div className="space-y-4 text-center p-8 rounded-xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-xl">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 dark:border-indigo-500 mx-auto"></div>
-      <p className="text-blue-600 dark:text-indigo-400 font-medium">Loading...</p>
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50/20 to-indigo-50/20 themed-container">
+    <div className="space-y-4 text-center p-8 rounded-xl bg-white/50 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+      <p className="text-blue-600 font-medium">Loading...</p>
     </div>
   </div>
 );
 
 // Error Fallback Component
 const ErrorFallback = ({ error, resetErrorBoundary }) => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50/20 to-orange-50/20 dark:from-gray-900/20 dark:to-gray-800/20 themed-container">
-    <div className="max-w-md w-full space-y-4 text-center p-8 rounded-xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-xl">
-      <div className="text-red-500 dark:text-red-400 mx-auto">
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50/20 to-orange-50/20 themed-container">
+    <div className="max-w-md w-full space-y-4 text-center p-8 rounded-xl bg-white/50 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+      <div className="text-red-500 mx-auto">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
       </div>
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white">Something went wrong</h2>
-      <p className="text-gray-600 dark:text-gray-300">We encountered an error while loading the application.</p>
+      <h2 className="text-xl font-bold text-gray-900">Something went wrong</h2>
+      <p className="text-gray-600">We encountered an error while loading the application.</p>
       <button
         onClick={resetErrorBoundary}
         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
@@ -139,7 +139,9 @@ function App() {
 
   // Initialize theme
   useEffect(() => {
-    setTheme('neutral');
+    // Always use light theme
+    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.classList.add('light');
   }, []);
 
   const handleProfileModalClose = () => {
@@ -151,8 +153,8 @@ function App() {
   // Show loading screen while checking authentication
   if (loading) {
     return (
-      <ThemeProvider defaultTheme="system" storageKey="app-theme">
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <ThemeProvider defaultTheme="light" storageKey="app-theme">
+        <div className="min-h-screen bg-gray-50">
           <LoadingFallback />
         </div>
       </ThemeProvider>
@@ -160,9 +162,9 @@ function App() {
   }
 
   return (
-    <ThemeProvider defaultTheme="system" storageKey="app-theme">
+    <ThemeProvider defaultTheme="light" storageKey="app-theme">
       <Router>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 themed-container">
+        <div className="min-h-screen bg-gray-50 themed-container">
           {!loading && (
             <Navbar 
               onProfileClick={() => setShowProfileModal(true)}

@@ -19,8 +19,6 @@ import {
   MessageSquare, 
   Activity,
   UserCircle, 
-  Sun, 
-  Moon,
   LogOut,
   LogIn,
   Settings,
@@ -33,7 +31,6 @@ import {
   X,
   Info,
   Check,
-  Laptop,
   Sparkles,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -43,7 +40,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
-import { useTheme } from "@/components/theme-provider";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -88,8 +84,8 @@ const NavLink = ({ path, label, icon: Icon, onClick }: NavLinkProps) => {
   
   // For mobile view in the menu
   const mobileClasses = "flex items-center w-full px-4 py-3 rounded-lg transition-all duration-300";
-  const mobileActiveClasses = "bg-gradient-to-r from-purple-500/10 to-violet-600/20 text-purple-700 dark:text-purple-300 font-medium shadow-sm";
-  const mobileInactiveClasses = "text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-800/20";
+  const mobileActiveClasses = "bg-gradient-to-r from-purple-500/10 to-violet-600/20 text-purple-700 font-medium shadow-sm";
+  const mobileInactiveClasses = "text-gray-700 hover:bg-purple-50";
   
   // For desktop view in the navbar
   const desktopClasses = "flex items-center gap-2 px-3 py-2 rounded-lg transition-colors";
@@ -112,7 +108,7 @@ const NavLink = ({ path, label, icon: Icon, onClick }: NavLinkProps) => {
       <Icon className={cn(
         "transition-transform", 
         isMobile ? "w-5 h-5 mr-3" : "w-5 h-5",
-        isActive ? "text-purple-600 dark:text-purple-400" : "text-gray-500 dark:text-gray-400"
+        isActive ? "text-purple-600" : "text-gray-500"
       )} />
       <span className={cn(
         "transition-colors",
@@ -121,7 +117,7 @@ const NavLink = ({ path, label, icon: Icon, onClick }: NavLinkProps) => {
       
       {isActive && isMobile && (
         <div className="ml-auto">
-          <div className="h-2 w-2 rounded-full bg-purple-500 dark:bg-purple-400" />
+          <div className="h-2 w-2 rounded-full bg-purple-500" />
         </div>
       )}
     </Link>
@@ -131,11 +127,7 @@ const NavLink = ({ path, label, icon: Icon, onClick }: NavLinkProps) => {
 const Navbar = ({ onProfileClick }: NavbarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { theme, setTheme } = useTheme();
-  const [isDarkTheme, setIsDarkTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark';
-  });
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [user, setUser] = useState(auth.currentUser);
@@ -163,15 +155,9 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
       setEditProfile(JSON.parse(savedProfile));
     }
 
-    // Initialize theme from localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark-theme');
-      setIsDarkTheme(true);
-    } else {
-      document.documentElement.classList.remove('dark-theme');
-      setIsDarkTheme(false);
-    }
+    // Remove theme-related code and always use light theme
+    document.documentElement.classList.remove('dark-theme');
+    setIsDarkTheme(false);
 
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
@@ -204,16 +190,6 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-  };
-
-  const setSpecificTheme = (isDark: boolean) => {
-    const newTheme = isDark ? 'dark' : 'light';
-    setTheme(newTheme);
-  };
 
   const handleProfileUpdate = (updatedProfile: UserProfile) => {
     // Save to localStorage
@@ -325,16 +301,16 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
 
     return (
       <Dialog open={showProfileModal} onOpenChange={setShowProfileModal}>
-        <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-indigo-900/20 backdrop-blur-xl border border-blue-200/30 dark:border-blue-800/30 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.2)] dark:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]">
-          <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,transparent,black)] dark:bg-grid-slate-700/25 opacity-10"></div>
+        <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-white via-blue-50 to-indigo-50 backdrop-blur-xl border border-blue-200/30 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.2)]">
+          <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,transparent,black)] opacity-10"></div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(var(--primary-rgb),0.1),transparent_50%)]"></div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(var(--primary-rgb),0.1),transparent_50%)]"></div>
           
           <DialogHeader className="relative">
-            <DialogTitle className="text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400 tracking-tight">
+            <DialogTitle className="text-3xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent tracking-tight">
               Personal Details
             </DialogTitle>
-            <DialogDescription className="text-center text-gray-600 dark:text-gray-300">
+            <DialogDescription className="text-center text-gray-600">
               Please fill in your details to personalize your experience
             </DialogDescription>
           </DialogHeader>
@@ -342,7 +318,7 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
           <form onSubmit={handleSubmit} className="space-y-6 py-4 relative">
             {/* Name Input */}
             <div className="space-y-2 group">
-              <Label htmlFor="name" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
+              <Label htmlFor="name" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Full Name
               </Label>
               <Input
@@ -350,7 +326,7 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 placeholder="John Doe"
-                className="w-full bg-white/50 dark:bg-gray-800/50 border-blue-200/50 dark:border-blue-800/50 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 transition-all duration-300 backdrop-blur-sm"
+                className="w-full bg-white/50 border-blue-200/50 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300 backdrop-blur-sm"
                 required
               />
               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg blur-xl"></div>
@@ -358,7 +334,7 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
 
             {/* Gender Selection */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
+              <Label className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Gender
               </Label>
               <RadioGroup
@@ -367,23 +343,23 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 className="flex space-x-4"
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="male" id="male" className="border-blue-400/50 text-blue-600 dark:text-blue-400" />
-                  <Label htmlFor="male" className="text-gray-700 dark:text-gray-300">Male</Label>
+                  <RadioGroupItem value="male" id="male" className="border-blue-400/50 text-blue-600" />
+                  <Label htmlFor="male" className="text-gray-700">Male</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="female" id="female" className="border-blue-400/50 text-blue-600 dark:text-blue-400" />
-                  <Label htmlFor="female" className="text-gray-700 dark:text-gray-300">Female</Label>
+                  <RadioGroupItem value="female" id="female" className="border-blue-400/50 text-blue-600" />
+                  <Label htmlFor="female" className="text-gray-700">Female</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="other" id="other" className="border-blue-400/50 text-blue-600 dark:text-blue-400" />
-                  <Label htmlFor="other" className="text-gray-700 dark:text-gray-300">Other</Label>
+                  <RadioGroupItem value="other" id="other" className="border-blue-400/50 text-blue-600" />
+                  <Label htmlFor="other" className="text-gray-700">Other</Label>
                 </div>
               </RadioGroup>
             </div>
 
             {/* Age Input */}
             <div className="space-y-2">
-              <Label htmlFor="age" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
+              <Label htmlFor="age" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Age
               </Label>
               <Input
@@ -394,14 +370,14 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 placeholder="25"
                 min="0"
                 max="120"
-                className="w-full bg-white/50 dark:bg-gray-800/50 border-blue-200/50 dark:border-blue-800/50 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 transition-all duration-300 backdrop-blur-sm"
+                className="w-full bg-white/50 border-blue-200/50 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300 backdrop-blur-sm"
                 required
               />
             </div>
 
             {/* Weight Input */}
             <div className="space-y-2">
-              <Label htmlFor="weight" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
+              <Label htmlFor="weight" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Weight (kg)
               </Label>
               <Input
@@ -412,14 +388,14 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 placeholder="70"
                 step="0.1"
                 min="0"
-                className="w-full bg-white/50 dark:bg-gray-800/50 border-blue-200/50 dark:border-blue-800/50 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 transition-all duration-300 backdrop-blur-sm"
+                className="w-full bg-white/50 border-blue-200/50 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300 backdrop-blur-sm"
                 required
               />
             </div>
 
             {/* Height Input */}
             <div className="space-y-2">
-              <Label htmlFor="height" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
+              <Label htmlFor="height" className="text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Height (metres)
               </Label>
               <Input
@@ -430,7 +406,7 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 placeholder="1.75"
                 step="0.01"
                 min="0"
-                className="w-full bg-white/50 dark:bg-gray-800/50 border-blue-200/50 dark:border-blue-800/50 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 transition-all duration-300 backdrop-blur-sm"
+                className="w-full bg-white/50 border-blue-200/50 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300 backdrop-blur-sm"
                 required
               />
             </div>
@@ -473,14 +449,14 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b-[2px] border-blue-200/30 dark:border-blue-800/30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.3)]">
+    <header className="sticky top-0 z-50 w-full border-b-[2px] border-blue-200/30 bg-white/95 backdrop-blur-2xl shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)]">
       {/* AI-inspired animated gradient background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08)_0%,transparent_50%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.08)_0%,transparent_50%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.15)_0%,transparent_50%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.15)_0%,transparent_50%)]"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent dark:from-gray-900/50 backdrop-blur-xl"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.08)_0%,transparent_50%),radial-gradient(circle_at_top_right,rgba(99,102,241,0.08)_0%,transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent backdrop-blur-xl"></div>
       
       {/* 3D border effect */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent dark:via-blue-400/20"></div>
-      <div className="absolute inset-x-0 bottom-[1px] h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent dark:via-indigo-400/20 blur-sm"></div>
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
+      <div className="absolute inset-x-0 bottom-[1px] h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent blur-sm"></div>
       
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
@@ -497,8 +473,8 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
             <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-lg opacity-0 group-hover:opacity-100 blur-xl transition-all duration-300"></div>
             <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
             
-            <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400 transform group-hover:rotate-12 transition-transform duration-300 relative" />
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent relative">
+            <Activity className="h-6 w-6 text-blue-600 transform group-hover:rotate-12 transition-transform duration-300 relative" />
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent relative">
               LifeSync
               <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
             </span>
@@ -526,19 +502,19 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-72 p-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-r border-blue-200/30 dark:border-blue-800/30">
+          <SheetContent side="left" className="w-72 p-0 bg-white/95 backdrop-blur-xl border-r border-blue-200/30">
             <div className="flex flex-col h-full">
-              <div className="py-6 px-6 border-b border-blue-200/30 dark:border-blue-800/30 bg-gradient-to-r from-purple-500/10 to-violet-600/10">
+              <div className="py-6 px-6 border-b border-blue-200/30 bg-gradient-to-r from-purple-500/10 to-violet-600/10">
                 <div className="flex items-center gap-3">
-                  <Activity className="h-7 w-7 text-purple-600 dark:text-purple-400" />
-                  <span className="text-xl font-bold bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 dark:from-purple-400 dark:via-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                  <Activity className="h-7 w-7 text-purple-600" />
+                  <span className="text-xl font-bold bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 bg-clip-text text-transparent">
                     LifeSync
                   </span>
                 </div>
               </div>
               
               <div className="pt-4 pb-2 px-4">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Navigation</p>
+                <p className="text-sm font-medium text-gray-500">Navigation</p>
               </div>
               
               <nav className="flex-1 px-3">
@@ -558,22 +534,22 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                   ))}
                 </div>
                 
-                <div className="mt-6 pt-6 border-t border-blue-200/30 dark:border-blue-800/30">
-                  <div className="px-3 py-2 rounded-lg bg-purple-50 dark:bg-purple-900/20 mb-4">
+                <div className="mt-6 pt-6 border-t border-blue-200/30">
+                  <div className="px-3 py-2 rounded-lg bg-purple-50 mb-4">
                     <div className="flex items-center mb-2">
                       <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center text-white mr-3">
                         <Bell className="h-4 w-4" />
                       </div>
-                      <span className="font-medium text-sm text-purple-700 dark:text-purple-300">Quick Access</span>
+                      <span className="font-medium text-sm text-purple-700">Quick Access</span>
                     </div>
                     <button 
                       onClick={() => {
                         setIsMobileMenuOpen(false);
                         navigate('/settings');
                       }}
-                      className="flex items-center w-full px-3 py-2 text-sm rounded-md text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800/30 transition-colors"
+                      className="flex items-center w-full px-3 py-2 text-sm rounded-md text-gray-700 hover:bg-purple-100 transition-colors"
                     >
-                      <Settings className="mr-2 h-4 w-4 text-purple-600 dark:text-purple-400" />
+                      <Settings className="mr-2 h-4 w-4 text-purple-600" />
                       Settings
                     </button>
                     {user && (
@@ -582,54 +558,29 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                           setIsMobileMenuOpen(false);
                           onProfileClick();
                         }}
-                        className="flex items-center w-full px-3 py-2 text-sm rounded-md text-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-800/30 transition-colors"
+                        className="flex items-center w-full px-3 py-2 text-sm rounded-md text-gray-700 hover:bg-purple-100 transition-colors"
                       >
-                        <User className="mr-2 h-4 w-4 text-purple-600 dark:text-purple-400" />
+                        <User className="mr-2 h-4 w-4 text-purple-600" />
                         Profile
                       </button>
                     )}
-                  </div>
-                  
-                  <div className="px-3 py-3 rounded-lg bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/10 dark:to-violet-900/10 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.1),transparent_70%)]"></div>
-                    <div className="relative">
-                      <p className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-1">Theme Preference</p>
-                      <div className="flex items-center mt-2">
-                        <button
-                          onClick={() => setTheme("light")}
-                          className={`mr-2 p-2 rounded-md ${theme === 'light' ? 'bg-purple-100 dark:bg-purple-800/40 ring-1 ring-purple-400' : 'hover:bg-purple-100 dark:hover:bg-purple-800/20'}`}
-                        >
-                          <Sun className="h-5 w-5 text-amber-500" />
-                        </button>
-                        <button
-                          onClick={() => setTheme("dark")}
-                          className={`mr-2 p-2 rounded-md ${theme === 'dark' ? 'bg-purple-100 dark:bg-purple-800/40 ring-1 ring-purple-400' : 'hover:bg-purple-100 dark:hover:bg-purple-800/20'}`}
-                        >
-                          <Moon className="h-5 w-5 text-indigo-500" />
-                        </button>
-                        <button
-                          onClick={() => setTheme("system")}
-                          className={`p-2 rounded-md ${theme === 'system' ? 'bg-purple-100 dark:bg-purple-800/40 ring-1 ring-purple-400' : 'hover:bg-purple-100 dark:hover:bg-purple-800/20'}`}
-                        >
-                          <Laptop className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                        </button>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </nav>
               
               {user && (
-                <div className="p-4 border-t border-blue-200/30 dark:border-blue-800/30">
+                <div className="p-4 border-t border-blue-200/30">
                   <button 
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       handleSignOut();
                     }}
-                    className="flex items-center justify-center w-full gap-2 py-2.5 rounded-lg text-white font-medium bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-colors"
+                    className="w-full px-3 py-2 text-sm font-medium rounded-md text-red-600 hover:bg-red-50 transition-colors"
                   >
-                    <LogOut className="h-4 w-4" />
-                    <span>Log Out</span>
+                    <div className="flex items-center">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Sign Out
+                    </div>
                   </button>
                 </div>
               )}
@@ -645,7 +596,7 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/30 to-indigo-500/30 rounded-full opacity-0 group-hover:opacity-100 blur-lg transition-all duration-300"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
                 
-                <Avatar className="h-10 w-10 transform group-hover:scale-105 transition-all duration-300 ring-2 ring-white/20 dark:ring-black/20">
+                <Avatar className="h-10 w-10 transform group-hover:scale-105 transition-all duration-300 ring-2 ring-white/20">
                   <AvatarImage 
                     src={auth.currentUser?.photoURL || profileImage || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'} 
                     alt="Profile"
@@ -658,7 +609,7 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 
                 {/* Animated ring effect */}
                 <motion.div
-                  className="absolute -inset-1 rounded-full border-2 border-blue-500/30 dark:border-blue-400/30"
+                  className="absolute -inset-1 rounded-full border-2 border-blue-500/30"
                   animate={{
                     scale: [1, 1.1, 1],
                     opacity: [0.3, 0.5, 0.3],
@@ -671,43 +622,24 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                 />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-2 p-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-blue-200/30 dark:border-blue-800/30 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.2)] dark:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.4)]">
+            <DropdownMenuContent align="end" className="w-56 mt-2 p-2 bg-white/90 backdrop-blur-xl border border-blue-200/30 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.2)]">
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   id="profile-trigger"
                   onClick={onProfileClick}
-                  className="cursor-pointer relative group px-4 py-2.5 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 dark:hover:from-blue-900/50 dark:hover:to-indigo-900/50"
+                  className="cursor-pointer relative group px-4 py-2.5 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50"
                 >
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <User className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300" />
+                  <User className="mr-2 h-4 w-4 text-blue-600 group-hover:scale-110 transition-transform duration-300" />
                   <span className="font-medium">Personal Details</span>
                 </DropdownMenuItem>
                 
-                <DropdownMenuItem 
-                  onClick={toggleTheme}
-                  className="flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 dark:hover:from-blue-900/50 dark:hover:to-indigo-900/50"
-                >
-                  <div className="flex items-center">
-                    {theme === 'dark' ? (
-                      <Moon className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-400" />
-                    ) : (
-                      <Sun className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-400" />
-                    )}
-                    <span className="font-medium">Theme</span>
-                  </div>
-                  <Switch
-                    checked={theme === 'dark'}
-                    onCheckedChange={(checked) => setSpecificTheme(checked)}
-                    className="ml-2"
-                  />
-                </DropdownMenuItem>
-                
-                <DropdownMenuSeparator className="my-2 bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
+                <DropdownMenuSeparator className="my-2 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
                 <DropdownMenuItem 
                   onClick={handleSignOut} 
-                  className="cursor-pointer text-red-600 dark:text-red-400 group px-4 py-2.5 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 dark:hover:from-red-900/50 dark:hover:to-red-800/50"
+                  className="cursor-pointer text-red-600 group px-4 py-2.5 rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100"
                 >
-                  <LogOut className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  <LogOut className="mr-2 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                   <span className="font-medium">Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
