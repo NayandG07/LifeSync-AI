@@ -32,6 +32,7 @@ import {
   Info,
   Check,
   Sparkles,
+  Watch
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -578,7 +579,7 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                     className="w-full px-3 py-2 text-sm font-medium rounded-md text-red-600 hover:bg-red-50 transition-colors"
                   >
                     <div className="flex items-center">
-                      <LogOut className="mr-2 h-4 w-4" />
+                      <LogOut className="mr-2 h-4" />
                       Sign Out
                     </div>
                   </button>
@@ -632,6 +633,11 @@ const Navbar = ({ onProfileClick }: NavbarProps) => {
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <User className="mr-2 h-4 w-4 text-blue-600 group-hover:scale-110 transition-transform duration-300" />
                   <span className="font-medium">Personal Details</span>
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem onClick={() => navigate('/integrations/fitbit')}>
+                  <Watch className="mr-2 h-4 w-4" />
+                  <span>Fitbit Integration</span>
                 </DropdownMenuItem>
                 
                 <DropdownMenuSeparator className="my-2 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />

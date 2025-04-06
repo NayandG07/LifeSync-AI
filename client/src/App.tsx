@@ -13,6 +13,7 @@ import ChatEnhanced from "@/pages/ChatEnhanced";
 import { toast } from 'sonner';
 import { checkFirebaseConnection } from '@/services/firebaseConnectionService';
 import { useNetworkStatus } from '@/components/NetworkStatusProvider';
+import { FitbitProvider } from "@/contexts/FitbitContext";
 
 // Enable offline persistence for Firestore
 // This helps the app work better with intermittent connectivity
@@ -42,6 +43,7 @@ const NotFound = lazy(() => import('@/pages/not-found'));
 const ProfileRegistration = lazy(() => import('@/components/profile/ProfileRegistration'));
 const Settings = lazy(() => import('@/pages/Settings'));
 const Symptoms = lazy(() => import('@/pages/Symptoms'));
+const FitbitIntegration = lazy(() => import('@/components/integrations/FitbitIntegration'));
 
 // Loading Fallback Component
 const LoadingFallback = () => (
@@ -87,6 +89,7 @@ function App() {
     { href: '/chat-enhanced', label: 'Chat' },
     { href: '/symptoms', label: 'Symptoms' },
     { href: '/settings', label: 'Settings' },
+    { href: '/integrations/fitbit', label: 'Fitbit Integration' },
   ];
 
   // Check Firebase connection when network status changes
@@ -163,57 +166,63 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="app-theme">
-      <Router>
-        <div className="min-h-screen bg-gray-50 themed-container">
-          {!loading && (
-            <Navbar 
-              onProfileClick={() => setShowProfileModal(true)}
-            />
-          )}
-          <main className="container py-4 md:py-6 px-4 md:px-8 lg:px-16 max-w-6xl mx-auto themed-content">
-            <div className="space-y-4 md:space-y-6 mobile-stack">
-              <Suspense fallback={<LoadingFallback />}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route 
-                    path="/signup" 
-                    element={!user ? <SignUp /> : <Navigate to="/dashboard" />} 
-                  />
-                  <Route 
-                    path="/dashboard" 
-                    element={user ? <Dashboard /> : <Navigate to="/" />} 
-                  />
-                  <Route 
-                    path="/chat-enhanced" 
-                    element={user ? <ChatEnhanced /> : <Navigate to="/" />} 
-                  />
-                  <Route 
-                    path="/chat" 
-                    element={<Navigate to="/chat-enhanced" />} 
-                  />
-                  <Route 
-                    path="/symptoms" 
-                    element={user ? <Symptoms /> : <Navigate to="/" />} 
-                  />
-                  <Route 
-                    path="/settings" 
-                    element={user ? <Settings /> : <Navigate to="/" />} 
-                  />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </div>
-          </main>
-          {user && (
-            <Suspense fallback={<LoadingFallback />}>
-              <ProfileRegistration 
-                isOpen={showProfileModal} 
-                onClose={handleProfileModalClose} 
+      <FitbitProvider>
+        <Router>
+          <div className="min-h-screen bg-gray-50 themed-container">
+            {!loading && (
+              <Navbar 
+                onProfileClick={() => setShowProfileModal(true)}
               />
-            </Suspense>
-          )}
-        </div>
-      </Router>
+            )}
+            <main className="container py-4 md:py-6 px-4 md:px-8 lg:px-16 max-w-6xl mx-auto themed-content">
+              <div className="space-y-4 md:space-y-6 mobile-stack">
+                <Suspense fallback={<LoadingFallback />}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route 
+                      path="/signup" 
+                      element={!user ? <SignUp /> : <Navigate to="/dashboard" />} 
+                    />
+                    <Route 
+                      path="/dashboard" 
+                      element={user ? <Dashboard /> : <Navigate to="/" />} 
+                    />
+                    <Route 
+                      path="/chat-enhanced" 
+                      element={user ? <ChatEnhanced /> : <Navigate to="/" />} 
+                    />
+                    <Route 
+                      path="/chat" 
+                      element={<Navigate to="/chat-enhanced" />} 
+                    />
+                    <Route 
+                      path="/symptoms" 
+                      element={user ? <Symptoms /> : <Navigate to="/" />} 
+                    />
+                    <Route 
+                      path="/settings" 
+                      element={user ? <Settings /> : <Navigate to="/" />} 
+                    />
+                    <Route 
+                      path="/integrations/fitbit" 
+                      element={user ? <FitbitIntegration /> : <Navigate to="/" />} 
+                    />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </div>
+            </main>
+            {user && (
+              <Suspense fallback={<LoadingFallback />}>
+                <ProfileRegistration 
+                  isOpen={showProfileModal} 
+                  onClose={handleProfileModalClose} 
+                />
+              </Suspense>
+            )}
+          </div>
+        </Router>
+      </FitbitProvider>
     </ThemeProvider>
   );
 }
