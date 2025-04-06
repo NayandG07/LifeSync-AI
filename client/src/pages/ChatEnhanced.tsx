@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -199,7 +199,8 @@ export default function ChatEnhanced() {
                 name: "Previous Chat",
                 messages: savedMessages,
                 createdAt: new Date(savedMessages[0].timestamp),
-                lastUpdated: new Date(savedMessages[savedMessages.length - 1].timestamp)
+                lastUpdated: new Date(savedMessages[savedMessages.length - 1].timestamp),
+                favorite: false
               };
               setTabs([savedTab]);
               setActiveTabId(savedTab.id);
@@ -294,7 +295,8 @@ export default function ChatEnhanced() {
       name: `Chat ${nextChatNumber}`,
       messages: [welcomeMessage],
       createdAt: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
+      favorite: false
     };
     
     const updatedTabs = [...tabs, newTab];
@@ -346,7 +348,8 @@ export default function ChatEnhanced() {
         name: `Chat 1`,
         messages: [welcomeMessage],
         createdAt: new Date(),
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
+        favorite: false
       };
       
       // Update state
@@ -631,6 +634,20 @@ export default function ChatEnhanced() {
     }
   };
 
+  // Toggle favorite status for a chat
+  const toggleFavorite = (tabId: string) => {
+    const updatedTabs = tabs.map(tab => 
+      tab.id === tabId ? { ...tab, favorite: !tab.favorite } : tab
+    );
+    
+    setTabs(updatedTabs);
+    
+    // Save updated tabs to localStorage
+    if (user) {
+      localStorage.setItem(`chat_tabs_${user.uid}`, JSON.stringify(updatedTabs));
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800">
@@ -694,21 +711,32 @@ export default function ChatEnhanced() {
       )}
 
       {/* Sidebar - conditionally rendered based on state for mobile */}
-      <div className={`fixed md:relative z-20 transition-all duration-300 ease-in-out ${
-        isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 h-full`}>
-        <ChatSidebar 
-          tabs={tabs}
-          activeTabId={activeTabId}
-          onTabSelect={switchTab}
-          onTabClose={closeTab}
-          onCreateTab={createNewTab}
-          onClose={() => setIsSidebarOpen(false)}
-          onDeleteAllChats={handleAfterDeleteAll}
-          user={user}
-          isMobile={isMobile}
-        />
-      </div>
+      <AnimatePresence mode="wait">
+        {isSidebarOpen && (
+          <motion.div 
+            className={`md:w-[320px] w-full absolute md:relative z-30 md:z-auto h-full ${
+              isMobile ? 'border-r border-slate-200 dark:border-slate-700' : ''
+            }`}
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          >
+            <ChatSidebar 
+              tabs={tabs}
+              activeTabId={activeTabId}
+              onTabSelect={switchTab}
+              onTabClose={closeTab}
+              onCreateTab={createNewTab}
+              onClose={() => setIsSidebarOpen(false)}
+              onDeleteAllChats={handleAfterDeleteAll}
+              onToggleFavorite={toggleFavorite}
+              user={user!}
+              isMobile={isMobile}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Main chat area */}
       <div className="flex-1 flex flex-col overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 w-full">

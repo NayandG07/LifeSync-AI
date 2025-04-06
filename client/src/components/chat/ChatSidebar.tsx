@@ -16,7 +16,8 @@ import {
   Search,
   History,
   Zap,
-  Sparkles
+  Sparkles,
+  Star
 } from "lucide-react";
 import { ChatTab } from "@/lib/types";
 import { User as FirebaseUser } from "firebase/auth";
@@ -32,6 +33,7 @@ interface ChatSidebarProps {
   onCreateTab: () => void;
   onClose: () => void;
   onDeleteAllChats: () => void;
+  onToggleFavorite: (tabId: string) => void;
   user: FirebaseUser;
   isMobile: boolean;
 }
@@ -44,6 +46,7 @@ export default function ChatSidebar({
   onCreateTab,
   onClose,
   onDeleteAllChats,
+  onToggleFavorite,
   user,
   isMobile
 }: ChatSidebarProps) {
@@ -70,8 +73,8 @@ export default function ChatSidebar({
         oneDayAgo.setDate(oneDayAgo.getDate() - 1);
         return new Date(tab.lastUpdated) >= oneDayAgo;
       }
-      // For now, we don't have a favorites system, so treat all as non-favorites
-      if (selectedCategory === 'favorites') return false;
+      // Filter favorites based on the favorite flag
+      if (selectedCategory === 'favorites') return tab.favorite === true;
       
       return true;
     })
@@ -249,12 +252,6 @@ export default function ChatSidebar({
                   <div className="flex-1 overflow-hidden">
                     <div className="font-semibold truncate flex items-center">
                       {tab.name}
-                      {tab.id === activeTabId && (
-                        <Edit 
-                          className="h-3 w-3 ml-1.5 text-blue-500 dark:text-blue-400" 
-                          aria-label="Rename chat"
-                        />
-                      )}
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400 truncate flex items-center">
                       <span className="mr-1.5">{format(new Date(tab.lastUpdated), "MMM d, h:mm a")}</span>
@@ -262,14 +259,35 @@ export default function ChatSidebar({
                       <span className="ml-1.5">{tab.messages.length} messages</span>
                     </div>
                   </div>
-                  <motion.button 
-                    onClick={(e) => onTabClose(tab.id, e)}
-                    whileHover={{ scale: 1.1, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <X className="h-4 w-4" />
-                  </motion.button>
+                  <div className="flex items-center space-x-1">
+                    {/* Favorite Star Button */}
+                    <motion.button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleFavorite(tab.id);
+                      }}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className={`p-1.5 rounded-full transition-colors ${
+                        tab.favorite 
+                          ? 'text-yellow-400 hover:text-yellow-500' 
+                          : 'text-slate-400 hover:text-yellow-400 dark:text-slate-500 dark:hover:text-yellow-400'
+                      } ${tab.favorite ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                      aria-label={tab.favorite ? "Remove from favorites" : "Add to favorites"}
+                    >
+                      <Star className="h-4 w-4" fill={tab.favorite ? "currentColor" : "none"} />
+                    </motion.button>
+                    
+                    {/* Close Button */}
+                    <motion.button 
+                      onClick={(e) => onTabClose(tab.id, e)}
+                      whileHover={{ scale: 1.1, rotate: 90 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-4 w-4" />
+                    </motion.button>
+                  </div>
                 </motion.div>
               ))
             ) : (

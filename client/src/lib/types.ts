@@ -19,4 +19,5 @@ export interface ChatTab {
   messages: Message[];
   createdAt: Date;
   lastUpdated: Date;
+  favorite?: boolean; // Track if the chat is favorited
 } 
