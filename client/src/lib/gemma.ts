@@ -250,8 +250,10 @@ export async function generateGemmaResponse(
       
       const data = await response.json();
       
-      // Extract the text response from the webhook
+      // Extract the text response and max tokens from the webhook
       let responseText = '';
+      let maxTokens = 1024; // Default fallback
+      
       if (data.text) {
         responseText = data.text;
       } else if (typeof data === 'string') {
@@ -262,8 +264,13 @@ export async function generateGemmaResponse(
         return getRandomResponse(category);
       }
       
-      // Clean up the response
-      return cleanResponse(responseText);
+      // Get max tokens from response if available
+      if (data.max_tokens) {
+        maxTokens = parseInt(data.max_tokens);
+      }
+      
+      // Clean up the response with dynamic token limit
+      return cleanResponse(responseText, maxTokens);
       
     } catch (error) {
       console.error("Error in API call:", error);
@@ -278,7 +285,7 @@ export async function generateGemmaResponse(
 }
 
 // Helper function to clean the response text
-function cleanResponse(text: string): string {
+function cleanResponse(text: string, maxTokens: number = 1024): string {
   // Remove the instruction pattern that's showing up
   text = text.replace(/^Respond with helpful, empathetic advice\.?\s*/i, "").trim();
   
@@ -300,9 +307,9 @@ function cleanResponse(text: string): string {
   // Remove any User: or similar patterns that might follow
   text = text.split(/\n(?:User|Human):.*$/)[0].trim();
   
-  // Limit response length to 400 characters
-  if (text.length > 400) {
-    text = text.substring(0, 397) + "...";
+  // Limit response length to maxTokens characters
+  if (text.length > maxTokens) {
+    text = text.substring(0, maxTokens - 3) + "...";
   }
   
   // If we've stripped everything, provide a fallback response
