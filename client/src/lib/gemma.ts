@@ -307,9 +307,18 @@ function cleanResponse(text: string, maxTokens: number = 1024): string {
   // Remove any User: or similar patterns that might follow
   text = text.split(/\n(?:User|Human):.*$/)[0].trim();
   
+  // Check if the response appears to be truncated (ends without proper punctuation)
+  const lastChar = text.charAt(text.length - 1);
+  const properEndingPunctuation = ['.', '!', '?', '"', ')', ']', '}'].includes(lastChar);
+  const endsWithEllipsis = text.endsWith('...');
+  
   // Limit response length to maxTokens characters
   if (text.length > maxTokens) {
     text = text.substring(0, maxTokens - 3) + "...";
+  } else if (!properEndingPunctuation && !endsWithEllipsis && text.length > 50) {
+    // If it doesn't end with proper punctuation and isn't already truncated with ellipsis,
+    // add an ellipsis to indicate truncation
+    text += "...";
   }
   
   // If we've stripped everything, provide a fallback response
