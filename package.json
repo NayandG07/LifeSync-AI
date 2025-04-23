@@ -84,7 +84,7 @@
     "firebase-admin": "^13.1.0",
     "framer-motion": "^11.13.1",
     "input-otp": "^1.2.4",
-    "lucide-react": "^0.453.0",
+    "lucide-react": "^0.487.0",
     "memorystore": "^1.6.7",
     "node-fetch": "^2.7.0",
     "openai": "^4.87.3",
