@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif; /* Ensure Inter is primary */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+@layer base {
+  :root {
+    --background: 210 27% 95%; /* Light grey #F0F4F7 - or 0 0% 100% for pure white */
+    --foreground: 210 10% 23%; /* Darker grey for text */
+    
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 210 10% 23%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 10% 23%;
+    
+    --primary: 217 91% 60%; /* Royal Blue - Soft Blue (#64B5F6) from PRD - HSL: 207 88% 68% */
+                                   /* PRD Primary: Soft blue (#64B5F6) -> HSL: 207 88% 68% */
+                                   /* User Req: Slightly darken #66B2FF (216 100% 70%) -> Let's use 217 91% 60% */
+    --primary-foreground: 0 0% 100%; /* White */
+    
+    --secondary: 210 25% 88%; /* Lighter grey for secondary elements */
+    --secondary-foreground: 210 10% 23%;
+    
+    --muted: 210 25% 88%;
+    --muted-foreground: 210 10% 45%; /* Adjusted for better contrast */
+    
+    --accent: 122 39% 70%;   /* Pastel green (#A5D6A7) from PRD - HSL: 122 36% 75% */
+                                   /* User Req: Violet accent -> HSL: 270 60% 60% */
+                                   /* Let's keep PRD accent for now unless explicitly asked to change all instances */
+    --accent-foreground: 0 0% 10%; /* Dark green/grey for text on accent */
+
+    --violet-accent: 270 60% 65%; /* New violet accent */
+    --violet-accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 210 20% 80%; /* Softer border */
+    --input: 210 20% 85%; /* Lighter input background */
+    --input-border-focus: 217 91% 65%; /* Primary color for focus ring */
+    
+    --ring: 217 91% 60%; /* Primary color for rings */
+    
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    
+    --radius: 0.75rem; /* Default: 0.5rem, increased for softer corners */
+    
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 210 10% 15%; 
+    --foreground: 0 0% 98%;
+    --card: 210 10% 20%;
+    --card-foreground: 0 0% 98%;
+    --popover: 210 10% 20%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 85% 55%; 
+    --primary-foreground: 0 0% 10%;
+    --secondary: 210 10% 25%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 10% 25%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 122 30% 60%; 
+    --accent-foreground: 0 0% 10%;
+    --violet-accent: 270 50% 55%;
+    --violet-accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 10% 30%;
+    --input: 210 10% 30%;
+    --input-border-focus: 217 85% 60%;
+    --ring: 217 85% 55%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    /* Soft gradient background */
+    @apply bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(210,30%,97%)] to-[hsl(var(--background))] text-foreground;
+    /* @apply bg-background text-foreground; */
+    @apply antialiased;
+    scroll-behavior: smooth;
+  }
+  
+  h1 { @apply text-4xl md:text-5xl font-extrabold tracking-tight; }
+  h2 { @apply text-3xl md:text-4xl font-bold tracking-tight; }
+  h3 { @apply text-2xl md:text-3xl font-semibold tracking-tight; }
+  p { @apply text-base md:text-lg leading-relaxed text-muted-foreground; }
+
+  section {
+    @apply py-12 md:py-16 lg:py-20; /* Consistent section padding */
+  }
+
+  .container {
+    @apply px-6; /* Default container padding */
+  }
+
+  .card-soft-shadow {
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Equivalent to shadow-soft */
+  }
+  .card-soft-shadow-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Equivalent to shadow-soft-lg */
+  }
+}
+
+/* Custom animation for pulsing gradient line or other elements */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
