@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "647875324235",
+    "project_id": "lifesync-app-b2558",
+    "storage_bucket": "lifesync-app-b2558.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647875324235:android:da4f52241b25e173ffe0ce",
+        "android_client_info": {
+          "package_name": "com.lifesyncai.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647875324235-nqilp5aac16u3ug0c9hupuc5flvpv0eg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKNz1rhxFd5RnwRBc6kqmaFaVoXDeuqUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647875324235-nqilp5aac16u3ug0c9hupuc5flvpv0eg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

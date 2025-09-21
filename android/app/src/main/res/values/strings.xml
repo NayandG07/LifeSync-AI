@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LifeSync AI</string>
+    <!-- Replace with your actual Google Web Client ID -->
+    <string name="web_client_id">647875324235-nqilp5aac16u3ug0c9hupuc5flvpv0eg.apps.googleusercontent.com</string>
+</resources> 
