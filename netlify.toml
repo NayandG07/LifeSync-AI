@@ -11,11 +11,27 @@
 [build.environment]
   # Node.js version
   NODE_VERSION = "18"
-  
-  # NPM version (optional, will use default for Node version)
-  # NPM_VERSION = "9"
 
-# Redirect rules
+# Enable Next.js runtime for Server Actions
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Next.js specific configuration
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Redirect rules for Next.js routing
+[[redirects]]
+  from = "/_next/static/*"
+  to = "/_next/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -50,10 +66,6 @@
   [headers.values]
     Content-Type = "application/vnd.android.package-archive"
     Content-Disposition = "attachment"
-
-# Function settings (if you plan to use Netlify Functions)
-[functions]
-  directory = "netlify/functions"
 
 # Dev settings for local development
 [dev]
